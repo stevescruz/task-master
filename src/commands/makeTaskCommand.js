@@ -19,7 +19,7 @@ async function makeTaskCommand() {
         .action(async (description) => {
             try {
                 const parsedDescription = joinInput(description, ' ');
-                const task = await tasksRepository.createTask(parsedDescription);
+                const task = await tasksRepository.createTask({ description: parsedDescription });
                 console.table(task);
                 console.log(`New task added successfully.`);
             } catch (error) {
