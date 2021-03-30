@@ -28,7 +28,7 @@ async function makeTaskCommand() {
         });
 
     taskCommand
-        .command('done <id>')
+        .command('delete <id>')
         .action(async (id) => {
             try {
                 const parsedId = parseInt(id);
@@ -40,7 +40,7 @@ async function makeTaskCommand() {
 
                 if (task) {
                     console.table(task);
-                    console.log('Task removed successfully.')
+                    console.log('Task deleted successfully.')
                 } else {
                     throw new Error(`A task with the id {${parsedId}} does not exist.`);
                 }
