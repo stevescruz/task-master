@@ -9,7 +9,7 @@ async function makeTaskCommand() {
 
     taskCommand
         .description('create, remove or list existing tasks.', {
-            subcommand: 'add, done or list'
+            subcommand: 'add, delete, done or list'
         })
         .arguments('<subcommand>')
         .usage('task list');
@@ -41,6 +41,28 @@ async function makeTaskCommand() {
                 if (task) {
                     console.table(task);
                     console.log('Task deleted successfully.')
+                } else {
+                    throw new Error(`A task with the id {${parsedId}} does not exist.`);
+                }
+            } catch (error) {
+                console.error(error.message);
+            }
+        });
+
+        taskCommand
+        .command('done <id>')
+        .action(async (id) => {
+            try {
+                const parsedId = parseInt(id);
+                if (Number.isNaN(parsedId)) {
+                    throw new Error('Cannot provide a non-numeric value for the id.');
+                }
+
+                const task = await tasksRepository.updateTaskById(parsedId, { status: 'done' });
+
+                if (task) {
+                    console.table(task);
+                    console.log("Task's status marked as done successfully.");
                 } else {
                     throw new Error(`A task with the id {${parsedId}} does not exist.`);
                 }
