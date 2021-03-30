@@ -1,6 +1,7 @@
 class Task {
-    constructor(description) {
+    constructor({ description }) {
         this.description = description;
+        this.status = 'pending';
     }
 }
 

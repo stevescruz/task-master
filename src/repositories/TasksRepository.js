@@ -43,6 +43,21 @@ class TasksRepository {
         return removedTask;
     }
 
+    async updateTaskById(id, modifiedTask) {
+        if (this.tasks.length < id || id <= 0) {
+            return null;
+        }
+
+        const currentTask = this.tasks[id - 1];
+        this.tasks[id - 1] = {
+            ...currentTask,
+            ...modifiedTask,
+        };
+        await this.tasksDatabase.writeFileContent(this.tasks);
+
+        return this.tasks[id - 1];
+    }
+
     async listTasks() {
         return this.tasks.length !== 0 ? this.tasks : [];
     }
