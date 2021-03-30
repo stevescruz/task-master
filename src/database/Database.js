@@ -20,11 +20,8 @@ class Database {
         return content ? JSON.parse(content) : [];
     }
 
-    async writeFileContent(dataRecord) {
-        const fileContent = await this.readFileContent();
-        fileContent.push(dataRecord);
-
-        await writeFile(this.filepath, JSON.stringify(fileContent), { encoding: this.OPTIONS.encoding });
+    async writeFileContent(content) {
+        await writeFile(this.filepath, JSON.stringify(content), { encoding: this.OPTIONS.encoding });
     }
 
     async clearFile() {
