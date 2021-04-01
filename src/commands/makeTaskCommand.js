@@ -18,10 +18,17 @@ async function makeTaskCommand() {
 
     taskCommand
         .command('add <description...>')
-        .action(async (description) => {
+        .addOption(new Option('-p, --priority <value>', "Set a task's priority to low, normal or high")
+            .choices(['L', 'N', 'H'])
+            .default('N')
+        )
+        .action(async (description, options) => {
             try {
                 const parsedDescription = joinInput(description, ' ');
-                const task = await tasksRepository.createTask(parsedDescription);
+                const task = await tasksRepository.createTask({ 
+                    description: parsedDescription,
+                    priority: options.priority,
+                 });
                 const selectedTask = getObjectProperties(['description', 'status'] , task);
                 console.table(selectedTask);
                 console.log(`New task added successfully.`);
@@ -42,7 +49,7 @@ async function makeTaskCommand() {
                 const task = await tasksRepository.removeTaskById(parsedId);
 
                 if (task) {
-                    const filteredTask = getObjectProperties(['description', 'status'] , task);
+                    const filteredTask = getObjectProperties(['description', 'age', 'status'] , task);
                     filteredTask.age = getTimeSince(task.age);
                     console.table(filteredTask);
                     console.log('Task deleted successfully.')
@@ -66,7 +73,7 @@ async function makeTaskCommand() {
                 const task = await tasksRepository.updateTaskById(parsedId, { status: 'done' });
 
                 if (task) {
-                    const filteredTask = getObjectProperties(['description', 'status'] , task);
+                    const filteredTask = getObjectProperties(['description', 'age', 'status'] , task);
                     filteredTask.age = getTimeSince(task.age);
                     console.table(filteredTask);
                     console.log("Task's status marked as done successfully.");
@@ -81,12 +88,12 @@ async function makeTaskCommand() {
     taskCommand
         .command('list', { isDefault: true })
         .description('list all pending tasks')
-        .addOption(new Option('-a, --all', 'list all existing tasks, including those that are pending').default(false))
+        .option('-a, --all', 'list all existing tasks, including those that are pending', false)
         .action(async (options) => {
             try {
                 const tasks = await tasksRepository.listTasks();
                 const mappedTasks = tasks.map(task => {
-                    const selectedTask = getObjectProperties(['description', 'status'] , task);
+                    const selectedTask = getObjectProperties(['description', 'age', 'priority', 'status'] , task);
                     selectedTask.age = getTimeSince(task.age);
                     return selectedTask;
                 });

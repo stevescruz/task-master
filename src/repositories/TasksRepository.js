@@ -19,12 +19,12 @@ class TasksRepository {
         return new TasksRepository(tasksDatabase, mappedTasks);
     }
 
-    async createTask(description) {
+    async createTask({ description, priority }) {
         if (!description) {
             throw Error('Cannot create a new task with providing a description.')
         }
 
-        const task = new Task({ description });
+        const task = new Task({ description, priority });
         this.tasks.push(task);
 
         await this.tasksDatabase.writeFileContent(this.tasks);
