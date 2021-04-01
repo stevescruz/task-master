@@ -2,7 +2,7 @@ const { Command, Option } = require('commander');
 
 const { makeTasksRepository } = require('../repositories/makeTasksRepository');
 const joinInput = require('../utils/joinInput');
-const getObjectProperties = require('../utils/getObjectProperties');
+const selectObjectProperties = require('../utils/selectObjectProperties');
 const getTimeSince = require('../utils/getTimeSince');
 
 async function makeTaskCommand() {
@@ -29,7 +29,7 @@ async function makeTaskCommand() {
                     description: parsedDescription,
                     priority: options.priority,
                 });
-                const selectedTask = getObjectProperties(['description', 'status'], task);
+                const selectedTask = selectObjectProperties(['description', 'status'], task);
                 console.table(selectedTask);
                 console.log(`New task added successfully.`);
             } catch (error) {
@@ -49,7 +49,7 @@ async function makeTaskCommand() {
                 const task = await tasksRepository.removeTaskById(parsedId);
 
                 if (task) {
-                    const filteredTask = getObjectProperties(['description', 'age', 'status'], task);
+                    const filteredTask = selectObjectProperties(['description', 'age', 'status'], task);
                     filteredTask.age = getTimeSince(task.age);
                     console.table(filteredTask);
                     console.log('Task deleted successfully.')
@@ -73,7 +73,7 @@ async function makeTaskCommand() {
                 const task = await tasksRepository.updateTaskById(parsedId, { status: 'done' });
 
                 if (task) {
-                    const filteredTask = getObjectProperties(['description', 'age', 'status'], task);
+                    const filteredTask = selectObjectProperties(['description', 'age', 'status'], task);
                     filteredTask.age = getTimeSince(task.age);
                     console.table(filteredTask);
                     console.log("Task's status marked as done successfully.");
@@ -93,7 +93,7 @@ async function makeTaskCommand() {
             try {
                 const tasks = await tasksRepository.listTasks();
                 const mappedTasks = tasks.map(task => {
-                    const selectedTask = getObjectProperties(['description', 'age', 'priority', 'status'], task);
+                    const selectedTask = selectObjectProperties(['description', 'age', 'priority', 'status'], task);
                     selectedTask.age = getTimeSince(task.age);
                     return selectedTask;
                 });
@@ -139,21 +139,21 @@ async function makeTaskCommand() {
 
             if ('H' in nextTasks) {
                 console.log('Next HIGH priority task:');
-                const selectedTask = getObjectProperties(['description', 'age', 'status'], nextTasks.H);
+                const selectedTask = selectObjectProperties(['description', 'age', 'status'], nextTasks.H);
                 selectedTask.age = getTimeSince(selectedTask.age);
                 console.table(selectedTask);
             }
 
             if ('N' in nextTasks) {
                 console.log('Next NORMAL priority task:');
-                const selectedTask = getObjectProperties(['description', 'age', 'status'], nextTasks.N);
+                const selectedTask = selectObjectProperties(['description', 'age', 'status'], nextTasks.N);
                 selectedTask.age = getTimeSince(selectedTask.age);
                 console.table(selectedTask);
             }
 
             if ('L' in nextTasks) {
                 console.log('Next LOW priority task:');
-                const selectedTask = getObjectProperties(['description', 'age', 'status'], nextTasks.L);
+                const selectedTask = selectObjectProperties(['description', 'age', 'status'], nextTasks.L);
                 selectedTask.age = getTimeSince(selectedTask.age);
                 console.table(selectedTask);
             }
