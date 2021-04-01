@@ -1,7 +1,8 @@
 class Task {
-    constructor({ description }) {
+    constructor({ description, status, age }) {
         this.description = description;
-        this.status = 'pending';
+        this.status = status ? status: 'pending';
+        this.age = age ? age : (new Date());
     }
 }
 
