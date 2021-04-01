@@ -1,4 +1,4 @@
-const { Command } = require('commander');
+const { Command, Option } = require('commander');
 
 const { makeTasksRepository } = require('../repositories/makeTasksRepository');
 const joinInput = require('../utils/joinInput');
@@ -22,8 +22,8 @@ async function makeTaskCommand() {
             try {
                 const parsedDescription = joinInput(description, ' ');
                 const task = await tasksRepository.createTask(parsedDescription);
-                const filteredTask = getObjectProperties(['description', 'status'] , task);
-                console.table(filteredTask);
+                const selectedTask = getObjectProperties(['description', 'status'] , task);
+                console.table(selectedTask);
                 console.log(`New task added successfully.`);
             } catch (error) {
                 console.error(error.message);
@@ -80,17 +80,27 @@ async function makeTaskCommand() {
 
     taskCommand
         .command('list', { isDefault: true })
-        .description('list all existing tasks')
-        .action(async () => {
+        .description('list all pending tasks')
+        .addOption(new Option('-a, --all', 'list all existing tasks, including those that are pending').default(false))
+        .action(async (options) => {
             try {
                 const tasks = await tasksRepository.listTasks();
                 const mappedTasks = tasks.map(task => {
-                    const filteredTask = getObjectProperties(['description', 'status'] , task);
-                    filteredTask.age = getTimeSince(task.age);
-                    return filteredTask;
+                    const selectedTask = getObjectProperties(['description', 'status'] , task);
+                    selectedTask.age = getTimeSince(task.age);
+                    return selectedTask;
                 });
-                console.table(mappedTasks);
-                console.log(`${tasks.length} ${tasks.length !== 1 ? 'tasks were' : 'task was'} displayed successfully.`);
+
+                if(options.all === true) {
+                    console.table(mappedTasks);
+                    console.log(`${mappedTasks.length} ${mappedTasks.length !== 1 ? 'tasks were' : 'task was'} displayed successfully.`);
+                } else {
+                    const filteredTasks = mappedTasks.filter(task => task.status !== 'done');
+                    
+                    console.table(filteredTasks);
+                    console.log(`${filteredTasks.length} ${filteredTasks.length !== 1 ? 'tasks were' : 'task was'} displayed successfully.`);
+                }
+
             } catch (error) {
                 console.error(error.message);
             }
