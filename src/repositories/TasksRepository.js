@@ -14,8 +14,9 @@ class TasksRepository {
     static async build() {
         const tasksDatabase = new Database('tasks.json');
         const tasks = await tasksDatabase.readFileContent();
+        const mappedTasks = tasks.map(task => new Task(task));
 
-        return new TasksRepository(tasksDatabase, tasks);
+        return new TasksRepository(tasksDatabase, mappedTasks);
     }
 
     async createTask(description) {
@@ -23,13 +24,12 @@ class TasksRepository {
             throw Error('Cannot create a new task with providing a description.')
         }
 
-        const task = new Task(description);
-        console.log(task);
+        const task = new Task({ description });
         this.tasks.push(task);
 
         await this.tasksDatabase.writeFileContent(this.tasks);
 
-        return task;
+        return { ...task, age: (task.age).toJSON() };
     }
 
     async removeTaskById(id) {
@@ -37,9 +37,9 @@ class TasksRepository {
             return null;
         }
 
-        const removedTask = this.tasks.splice(id - 1, 1);
+        const [removedTask] = this.tasks.splice(id - 1, 1);
         await this.tasksDatabase.writeFileContent(this.tasks);
-
+ 
         return removedTask;
     }
 
@@ -59,7 +59,7 @@ class TasksRepository {
     }
 
     async listTasks() {
-        return this.tasks.length !== 0 ? this.tasks : [];
+        return this.tasks.length !== 0 ? [...this.tasks] : [];
     }
 }
 
