@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/stevescruz/task-master#readme",
   "dependencies": {
+    "chalk": "^4.1.0",
     "cli-table3": "^0.6.0",
     "commander": "^7.2.0"
   }
