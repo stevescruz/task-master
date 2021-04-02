@@ -1,11 +1,12 @@
 const { Command, Option } = require('commander');
-const Table = require('cli-table3');
 
 const { makeTasksRepository } = require('../repositories/makeTasksRepository');
-const joinInput = require('../utils/joinInput');
-const selectObjectProperties = require('../utils/selectObjectProperties');
-const createTable = require('../utils/createTable');
-const getTimeSince = require('../utils/getTimeSince');
+
+const joinInput = require('../shared/utils/joinInput');
+const selectObjectProperties = require('../shared/utils/selectObjectProperties');
+const getTimeSince = require('../shared/utils/getTimeSince');
+const createTable = require('../shared/utils/createTable');
+const MessageColorEnum = require('../shared/enums/MessageColorEnum');
 
 async function makeTaskCommand() {
     const taskCommand = new Command('task');
@@ -36,9 +37,9 @@ async function makeTaskCommand() {
 
                 const table = createTable(properties, [selectedTask]);
                 console.log(table.toString());
-                console.log(`New task added successfully.`);
+                console.log(MessageColorEnum.SUCCESS(`New task added successfully.`));
             } catch (error) {
-                console.error(error.message);
+                console.error(MessageColorEnum.ERROR(error.message));
             }
         });
 
@@ -60,12 +61,12 @@ async function makeTaskCommand() {
 
                     const table = createTable(properties, [filteredTask]);
                     console.log(table.toString());
-                    console.log('Task deleted successfully.')
+                    console.log(MessageColorEnum.SUCCESS('Task deleted successfully.'));
                 } else {
                     throw new Error(`A task with the id {${parsedId}} does not exist.`);
                 }
             } catch (error) {
-                console.error(error.message);
+                console.error(MessageColorEnum.ERROR(error.message));
             }
         });
 
@@ -87,12 +88,12 @@ async function makeTaskCommand() {
 
                     const table = createTable(properties, [filteredTask]);
                     console.log(table.toString());
-                    console.log("Task's status marked as done successfully.");
+                    console.log(MessageColorEnum.SUCCESS("Task's status marked as done successfully."));
                 } else {
                     throw new Error(`A task with the id {${parsedId}} does not exist.`);
                 }
             } catch (error) {
-                console.error(error.message);
+                console.error(MessageColorEnum.ERROR(error.message));
             }
         });
 
@@ -113,17 +114,17 @@ async function makeTaskCommand() {
                 if (options.all === true) {
                     const table = createTable(properties, mappedTasks);
                     console.log(table.toString());
-                    console.log(`${mappedTasks.length} ${mappedTasks.length !== 1 ? 'tasks were' : 'task was'} displayed successfully.`);
+                    console.log(MessageColorEnum.SUCCESS(`${mappedTasks.length} ${mappedTasks.length !== 1 ? 'tasks were' : 'task was'} displayed successfully.`));
                 } else {
                     const filteredTasks = mappedTasks.filter(task => task.status !== 'done');
 
                     const table = createTable(properties, filteredTasks);
                     console.log(table.toString());
-                    console.log(`${filteredTasks.length} ${filteredTasks.length !== 1 ? 'tasks were' : 'task was'} displayed successfully.`);
+                    console.log(MessageColorEnum.SUCCESS(`${filteredTasks.length} ${filteredTasks.length !== 1 ? 'tasks were' : 'task was'} displayed successfully.`));
                 }
 
             } catch (error) {
-                console.error(error.message);
+                console.error(MessageColorEnum.ERROR(error.message));
             }
         })
 
@@ -131,52 +132,56 @@ async function makeTaskCommand() {
         .command('next')
         .description('list the next pending task')
         .action(async () => {
-            const tasks = await tasksRepository.listTasks();
-            const properties = ['description', 'age', 'status'];
+            try {
+                const tasks = await tasksRepository.listTasks();
+                const properties = ['description', 'age', 'status'];
 
-            const nextTasks = tasks.reduce((acc, task) => {
-                if (!('H' in acc) && task.priority === 'H' && task.status !== 'done') {
-                    acc['H'] = task;
+                const nextTasks = tasks.reduce((acc, task) => {
+                    if (!('H' in acc) && task.priority === 'H' && task.status !== 'done') {
+                        acc['H'] = task;
+                        return acc;
+                    }
+
+                    if (!('N' in acc) && task.priority === 'N' && task.status !== 'done') {
+                        acc['N'] = task;
+                        return acc;
+                    }
+
+                    if (!('L' in acc) && task.priority === 'L' && task.status !== 'done') {
+                        acc['L'] = task;
+                        return acc;
+                    }
                     return acc;
+                }, {});
+
+                if ('H' in nextTasks) {
+                    console.log(MessageColorEnum.HIGH_PRIORITY('Next HIGH priority task:'));
+                    const selectedTask = selectObjectProperties(['description', 'age', 'status'], nextTasks.H);
+                    selectedTask.age = getTimeSince(selectedTask.age);
+
+                    const table = createTable(properties, [selectedTask]);
+                    console.log(table.toString());
                 }
 
-                if (!('N' in acc) && task.priority === 'N' && task.status !== 'done') {
-                    acc['N'] = task;
-                    return acc;
+                if ('N' in nextTasks) {
+                    console.log(MessageColorEnum.NORMAL_PRIORITY('Next NORMAL priority task:'));
+                    const selectedTask = selectObjectProperties(['description', 'age', 'status'], nextTasks.N);
+                    selectedTask.age = getTimeSince(selectedTask.age);
+
+                    const table = createTable(properties, [selectedTask]);
+                    console.log(table.toString());
                 }
 
-                if (!('L' in acc) && task.priority === 'L' && task.status !== 'done') {
-                    acc['L'] = task;
-                    return acc;
+                if ('L' in nextTasks) {
+                    console.log(MessageColorEnum.LOW_PRIORITY('Next LOW priority task:'));
+                    const selectedTask = selectObjectProperties(['description', 'age', 'status'], nextTasks.L);
+                    selectedTask.age = getTimeSince(selectedTask.age);
+
+                    const table = createTable(properties, [selectedTask]);
+                    console.log(table.toString());
                 }
-                return acc;
-            }, {});
-
-            if ('H' in nextTasks) {
-                console.log('Next HIGH priority task:');
-                const selectedTask = selectObjectProperties(['description', 'age', 'status'], nextTasks.H);
-                selectedTask.age = getTimeSince(selectedTask.age);
-                
-                const table = createTable(properties, [selectedTask]);
-                console.log(table.toString());
-            }
-
-            if ('N' in nextTasks) {
-                console.log('Next NORMAL priority task:');
-                const selectedTask = selectObjectProperties(['description', 'age', 'status'], nextTasks.N);
-                selectedTask.age = getTimeSince(selectedTask.age);
-
-                const table = createTable(properties, [selectedTask]);
-                console.log(table.toString());
-            }
-
-            if ('L' in nextTasks) {
-                console.log('Next LOW priority task:');
-                const selectedTask = selectObjectProperties(['description', 'age', 'status'], nextTasks.L);
-                selectedTask.age = getTimeSince(selectedTask.age);
-
-                const table = createTable(properties, [selectedTask]);
-                console.log(table.toString());
+            } catch (error) {
+                console.error(MessageColorEnum.ERROR(error.message));
             }
         });
 
