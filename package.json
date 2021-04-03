@@ -23,6 +23,7 @@
     "commander": "^7.2.0"
   },
   "devDependencies": {
+    "expect": "^26.6.2",
     "mocha": "^8.3.2"
   }
 }
