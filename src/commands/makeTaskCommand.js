@@ -2,6 +2,8 @@ const { Command, Option } = require('commander');
 
 const { makeTasksRepository } = require('../repositories/makeTasksRepository');
 
+const CreateTaskService = require('../services/CreateTaskService');
+
 const joinInput = require('../shared/utils/joinInput');
 const selectObjectProperties = require('../shared/utils/selectObjectProperties');
 const getTimeSince = require('../shared/utils/getTimeSince');
@@ -28,7 +30,8 @@ async function makeTaskCommand() {
         .action(async (description, options) => {
             try {
                 const parsedDescription = joinInput(description, ' ');
-                const task = await tasksRepository.createTask({
+                const createTask = new CreateTaskService(tasksRepository);
+                const task = await createTask.execute({
                     description: parsedDescription,
                     priority: options.priority,
                 });
