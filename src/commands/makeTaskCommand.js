@@ -4,6 +4,7 @@ const { makeTasksRepository } = require('../repositories/makeTasksRepository');
 
 const CreateTaskService = require('../services/CreateTaskService');
 const DeleteTaskService = require('../services/DeleteTaskService');
+const ListTasksService = require('../services/ListTasksService');
 
 const joinInput = require('../shared/utils/joinInput');
 const selectObjectProperties = require('../shared/utils/selectObjectProperties');
@@ -111,26 +112,19 @@ async function makeTaskCommand() {
         .option('-a, --all', 'list all existing tasks, including those that are pending', false)
         .action(async (options) => {
             try {
-                const tasks = await tasksRepository.listTasks();
+                const showAll = options.all ? true : false;
+                const listTasks = new ListTasksService(tasksRepository);
+                const tasks = await listTasks.execute(showAll);
+
                 const properties = ['description', 'age', 'priority', 'status'];
                 const mappedTasks = tasks.map(task => {
                     const selectedTask = selectObjectProperties(properties, task);
-                    selectedTask.age = getTimeSince(task.age);
                     return selectedTask;
                 });
 
-                if (options.all === true) {
-                    const table = createTable(properties, mappedTasks);
-                    console.log(table.toString());
-                    console.log(MessageColorEnum.SUCCESS(`${mappedTasks.length} ${mappedTasks.length !== 1 ? 'tasks were' : 'task was'} displayed successfully.`));
-                } else {
-                    const filteredTasks = mappedTasks.filter(task => task.status !== 'done');
-
-                    const table = createTable(properties, filteredTasks);
-                    console.log(table.toString());
-                    console.log(MessageColorEnum.SUCCESS(`${filteredTasks.length} ${filteredTasks.length !== 1 ? 'tasks were' : 'task was'} displayed successfully.`));
-                }
-
+                const table = createTable(properties, mappedTasks);
+                console.log(table.toString());
+                console.log(MessageColorEnum.SUCCESS(`${mappedTasks.length} ${mappedTasks.length !== 1 ? 'tasks were' : 'task was'} displayed successfully.`));
             } catch (error) {
                 console.error(MessageColorEnum.ERROR(error.message));
             }
