@@ -60,7 +60,7 @@ async function makeTaskCommand() {
 
                 const deleteTask = new DeleteTaskService(tasksRepository);
 
-                const task = await deleteTaskService(parsedId)
+                const task = await deleteTask.execute(parsedId)
 
                 if (task) {
                     const properties = ['description', 'age', 'status'];
