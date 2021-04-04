@@ -63,17 +63,12 @@ async function makeTaskCommand() {
 
                 const task = await deleteTask.execute(parsedId)
 
-                if (task) {
-                    const properties = ['description', 'age', 'status'];
-                    const filteredTask = selectObjectProperties(properties, task);
-                    filteredTask.age = getTimeSince(task.age);
+                const properties = ['description', 'age', 'status'];
+                const selectedTask = selectObjectProperties(properties, task);
 
-                    const table = createTable(properties, [filteredTask]);
-                    console.log(table.toString());
-                    console.log(MessageColorEnum.SUCCESS('Task deleted successfully.'));
-                } else {
-                    throw new Error(`A task with the id {${parsedId}} does not exist.`);
-                }
+                const table = createTable(properties, [selectedTask]);
+                console.log(table.toString());
+                console.log(MessageColorEnum.SUCCESS('Task deleted successfully.'));
             } catch (error) {
                 console.error(MessageColorEnum.ERROR(error.message));
             }
