@@ -1,4 +1,4 @@
-const AllowedChoicesTask = require('../shared/enums/AllowedChoicesTask');
+const AllowedChoicesTaskEnum = require('../shared/enums/AllowedChoicesTaskEnum');
 
 class CreateTaskService {
     constructor(tasksRepository) {
@@ -7,7 +7,7 @@ class CreateTaskService {
 
     async execute({ description, priority }) {
 
-        const allowedPriorities = new Set(AllowedChoicesTask.PRIORITIES);
+        const allowedPriorities = new Set(AllowedChoicesTaskEnum.PRIORITIES);
 
         if (priority && !allowedPriorities.has(priority)) {
             throw new Error('');

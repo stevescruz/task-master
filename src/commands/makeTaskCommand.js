@@ -3,12 +3,15 @@ const { Command, Option } = require('commander');
 const { makeTasksRepository } = require('../repositories/makeTasksRepository');
 
 const CreateTaskService = require('../services/CreateTaskService');
+const DeleteTaskService = require('../services/DeleteTaskService');
 
 const joinInput = require('../shared/utils/joinInput');
 const selectObjectProperties = require('../shared/utils/selectObjectProperties');
 const getTimeSince = require('../shared/utils/getTimeSince');
 const createTable = require('../shared/utils/createTable');
+
 const MessageColorEnum = require('../shared/enums/MessageColorEnum');
+const AllowedChoicesTaskEnum = require('../shared/enums/AllowedChoicesTaskEnum');
 
 async function makeTaskCommand() {
     const taskCommand = new Command('task');
@@ -24,7 +27,7 @@ async function makeTaskCommand() {
     taskCommand
         .command('add <description...>')
         .addOption(new Option('-p, --priority <value>', "Set a task's priority to low, normal or high")
-            .choices(['L', 'N', 'H'])
+            .choices(AllowedChoicesTaskEnum.PRIORITIES)
             .default('N')
         )
         .action(async (description, options) => {
@@ -55,7 +58,9 @@ async function makeTaskCommand() {
                     throw new Error('Cannot provide a non-numeric value for the id.');
                 }
 
-                const task = await tasksRepository.removeTaskById(parsedId);
+                const deleteTask = new DeleteTaskService(tasksRepository);
+
+                const task = await deleteTaskService(parsedId)
 
                 if (task) {
                     const properties = ['description', 'age', 'status'];
