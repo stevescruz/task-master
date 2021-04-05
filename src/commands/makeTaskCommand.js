@@ -4,6 +4,7 @@ const { makeTasksRepository } = require('../repositories/makeTasksRepository');
 
 const CreateTaskService = require('../services/CreateTaskService');
 const DeleteTaskService = require('../services/DeleteTaskService');
+const FinalizeTaskService = require('../services/FinalizeTaskService');
 const ListTasksService = require('../services/ListTasksService');
 const ShowNextTasksService = require('../services/ShowNextTasksService');
 
@@ -56,6 +57,7 @@ async function makeTaskCommand() {
         .action(async (id) => {
             try {
                 const parsedId = parseInt(id);
+
                 if (Number.isNaN(parsedId)) {
                     throw new Error('Cannot provide a non-numeric value for the id.');
                 }
@@ -80,23 +82,21 @@ async function makeTaskCommand() {
         .action(async (id) => {
             try {
                 const parsedId = parseInt(id);
+
                 if (Number.isNaN(parsedId)) {
                     throw new Error('Cannot provide a non-numeric value for the id.');
                 }
 
-                const task = await tasksRepository.updateTaskById(parsedId, { status: 'done' });
+                const finalizeTask = new FinalizeTaskService(tasksRepository);
+                const task = await finalizeTask.execute(parsedId);
 
-                if (task) {
-                    const properties = ['description', 'age', 'status'];
-                    const filteredTask = selectObjectProperties(properties, task);
-                    filteredTask.age = getTimeSince(task.age);
+                const properties = ['description', 'age', 'status'];
+                const filteredTask = selectObjectProperties(properties, task);
+                filteredTask.age = getTimeSince(task.age);
 
-                    const table = createTable(properties, [filteredTask]);
-                    console.log(table.toString());
-                    console.log(MessageColorEnum.SUCCESS("Task's status marked as done successfully."));
-                } else {
-                    throw new Error(`A task with the id {${parsedId}} does not exist.`);
-                }
+                const table = createTable(properties, [filteredTask]);
+                console.log(table.toString());
+                console.log(MessageColorEnum.SUCCESS("Task's status marked as done successfully."));
             } catch (error) {
                 console.error(MessageColorEnum.ERROR(error.message));
             }
