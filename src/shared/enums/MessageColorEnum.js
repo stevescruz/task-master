@@ -4,9 +4,9 @@ MessageColorEnum = {
     SUCCESS: chalk.bold.green,
     WARNING: chalk.bold.keyword('orange'),
     ERROR: chalk.bold.red,
-    LOW_PRIORITY: chalk.bold.yellowBright,
-    NORMAL_PRIORITY: chalk.bold.hex('#FFA500'),
-    HIGH_PRIORITY: chalk.bold.redBright,
+    LOW_PRIORITY: chalk.yellowBright,
+    NORMAL_PRIORITY: chalk.hex('#FFA500'),
+    HIGH_PRIORITY: chalk.redBright,
 }
 
 module.exports = MessageColorEnum;
