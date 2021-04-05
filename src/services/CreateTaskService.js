@@ -12,7 +12,7 @@ class CreateTaskService {
         if (priority && !allowedPriorities.has(priority)) {
             throw new Error('');
         }        
-        const task = await this.tasksRepository.createTask({
+        const task = await this.tasksRepository.create({
             description,
             priority,
         });

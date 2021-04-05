@@ -22,7 +22,7 @@ class TasksRepository {
         return new TasksRepository(tasksDatabase, mappedTasks);
     }
 
-    async createTask({ description, priority }) {
+    async create({ description, priority }) {
         if (!description) {
             throw Error('Cannot create a new task with providing a description.')
         }
@@ -37,7 +37,7 @@ class TasksRepository {
         return { ...task, age: (task.age).toJSON() };
     }
 
-    async removeTaskById(id) {
+    async removeById(id) {
         if (this.tasks.length < id || id <= 0) {
             return null;
         }
@@ -54,7 +54,7 @@ class TasksRepository {
         return removedTask;
     }
 
-    async updateTaskById(id, modifiedTask) {
+    async updateById(id, modifiedTask) {
         if (this.tasks.length < id || id <= 0) {
             return null;
         }
@@ -69,7 +69,7 @@ class TasksRepository {
         return this.tasks[id - 1];
     }
 
-    async listTasks() {
+    async list() {
         return this.tasks.length !== 0 ? [...this.tasks] : [];
     }
 }

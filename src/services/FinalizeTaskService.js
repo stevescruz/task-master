@@ -8,7 +8,7 @@ class FinalizeTaskService {
             throw new Error('Cannot mark a task as done without providing a corresponding id.');
         }
 
-        const task = await this.tasksRepository.updateTaskById(id, { status: 'done' });
+        const task = await this.tasksRepository.updateById(id, { status: 'done' });
 
         if(!task) {
             throw new Error(`A task with the id {${id}} does not exist.`);

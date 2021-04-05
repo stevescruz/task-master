@@ -6,7 +6,7 @@ class ListTasksService {
     }
 
     async execute(showAll) {
-        const tasks = await this.tasksRepository.listTasks();
+        const tasks = await this.tasksRepository.list();
         const mappedTasks = tasks.map(task => {
             task.age = getTimeSince(task.age);
             return task;

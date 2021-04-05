@@ -6,7 +6,7 @@ class DeleteTaskService {
     }
 
     async execute(id) {
-        const task = await this.tasksRepository.removeTaskById(id);
+        const task = await this.tasksRepository.removeById(id);
 
         if(!task) {
             throw new Error(`A task with the id {${id}} does not exist.`);

@@ -19,7 +19,7 @@ describe('FinalizeTask', function () {
         };
         const expectedStatus = 'done';
 
-        fakeTasksRepository.createTask(taskData);
+        fakeTasksRepository.create(taskData);
 
         const updatedTask = await finalizeTask.execute(1);
         expect(updatedTask.status).toBe(expectedStatus);

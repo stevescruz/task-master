@@ -24,8 +24,8 @@ describe('DeleteTask', function () {
         };
         const id = 2;
 
-        const remainingTask = await fakeTasksRepository.createTask(taskData1);
-        await fakeTasksRepository.createTask(taskData2);
+        const remainingTask = await fakeTasksRepository.create(taskData1);
+        await fakeTasksRepository.create(taskData2);
 
         const removedTask = await deleteTask.execute(id);
 
@@ -39,7 +39,7 @@ describe('DeleteTask', function () {
 
         expect(removedTask).toStrictEqual(expectedTask);
 
-        const tasks = await fakeTasksRepository.listTasks();
+        const tasks = await fakeTasksRepository.list();
         const expectedTasks = [new Task(remainingTask)];
 
         expect(tasks).toStrictEqual(expectedTasks);
@@ -54,12 +54,12 @@ describe('DeleteTask', function () {
         };
         const id = 1;
 
-        await fakeTasksRepository.createTask(taskData1);
-        await fakeTasksRepository.createTask(taskData2);
+        await fakeTasksRepository.create(taskData1);
+        await fakeTasksRepository.create(taskData2);
 
         await deleteTask.execute(id);
 
-        const [remainingTask] = await fakeTasksRepository.listTasks();
+        const [remainingTask] = await fakeTasksRepository.list();
         const expectedTask = new Task({
             id,
             description: 'task for testing purposes',
@@ -80,7 +80,7 @@ describe('DeleteTask', function () {
             description: 'Buy 1 orange juice'
         };
 
-        await fakeTasksRepository.createTask(taskData);
+        await fakeTasksRepository.create(taskData);
 
         await expect(deleteTask.execute(2)).rejects.toBeInstanceOf(Error);
     });
@@ -94,8 +94,8 @@ describe('DeleteTask', function () {
             description: 'Buy 1 orange juice',
         };
 
-        await fakeTasksRepository.createTask(taskData);
-        await fakeTasksRepository.updateTaskById(1, { age: mockDate });
+        await fakeTasksRepository.create(taskData);
+        await fakeTasksRepository.updateById(1, { age: mockDate });
 
         const removedTask = await deleteTask.execute(1);
 

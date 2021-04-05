@@ -6,7 +6,7 @@ class ShowNextTasksService {
     }
 
     async execute() {
-        const tasks = await this.tasksRepository.listTasks();
+        const tasks = await this.tasksRepository.list();
         const nextTasks = tasks.reduce((acc, task) => {
             task.age = getTimeSince(task.age);
 

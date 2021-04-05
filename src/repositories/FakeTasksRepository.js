@@ -5,7 +5,7 @@ class FakeTasksRepository {
         this.tasks = [];
     }
 
-    async createTask({ description, priority }) {
+    async create({ description, priority }) {
         const id = this.tasks.length + 1;
         const task = new Task({ id, description, priority });
         this.tasks.push(task);
@@ -13,7 +13,7 @@ class FakeTasksRepository {
         return { ...task };
     }
 
-    async removeTaskById(id) {
+    async removeById(id) {
         if (this.tasks.length < id || id <= 0) {
             return null;
         }
@@ -28,7 +28,7 @@ class FakeTasksRepository {
         return removedTask;
     }
 
-    async updateTaskById(id, modifiedTask) {
+    async updateById(id, modifiedTask) {
         if (this.tasks.length < id || id <= 0) {
             return null;
         }
@@ -42,7 +42,7 @@ class FakeTasksRepository {
         return this.tasks[id - 1];
     }
 
-    async listTasks() {
+    async list() {
         return this.tasks.length !== 0 ? [...this.tasks] : [];
     }
 }
