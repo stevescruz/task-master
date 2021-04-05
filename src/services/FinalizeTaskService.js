@@ -4,6 +4,10 @@ class FinalizeTaskService {
     }
 
     async execute(id) {
+        if(!id) {
+            throw new Error('Cannot mark a task as done without providing a corresponding id.');
+        }
+
         const task = await this.tasksRepository.updateTaskById(id, { status: 'done' });
 
         if(!task) {
