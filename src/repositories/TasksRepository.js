@@ -34,7 +34,7 @@ class TasksRepository {
 
         await this.tasksDatabase.writeFileContent(this.tasks);
 
-        return { ...task, age: (task.age).toJSON() };
+        return new Task({ ...task, age: (task.age).toJSON() });
     }
 
     async removeById(id) {
@@ -60,13 +60,15 @@ class TasksRepository {
         }
 
         const currentTask = this.tasks[id - 1];
-        this.tasks[id - 1] = {
+        this.tasks[id - 1] = new Task ({
             ...currentTask,
             ...modifiedTask,
-        };
+        });
         await this.tasksDatabase.writeFileContent(this.tasks);
 
-        return this.tasks[id - 1];
+        const updatedTask = new Task (...this.tasks[id - 1]);
+
+        return updatedTask;
     }
 
     async list() {

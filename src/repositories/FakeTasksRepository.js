@@ -10,7 +10,7 @@ class FakeTasksRepository {
         const task = new Task({ id, description, priority });
         this.tasks.push(task);
 
-        return { ...task };
+        return new Task({ ...task });
     }
 
     async removeById(id) {
@@ -34,12 +34,14 @@ class FakeTasksRepository {
         }
 
         const currentTask = this.tasks[id - 1];
-        this.tasks[id - 1] = {
+        this.tasks[id - 1] = new Task ({
             ...currentTask,
             ...modifiedTask,
-        };
+        });
 
-        return this.tasks[id - 1];
+        const updatedTask = this.tasks[id - 1];
+
+        return updatedTask;
     }
 
     async list() {
