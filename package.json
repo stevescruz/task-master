@@ -3,6 +3,8 @@
   "version": "1.0.0",
   "description": "",
   "main": "cli.js",
+  "preferGlobal": true,
+  "bin": "./src/cli.js",
   "scripts": {
     "test": "npx mocha './tests/**/*.js'"
   },
