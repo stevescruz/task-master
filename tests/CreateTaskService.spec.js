@@ -16,11 +16,34 @@ describe('CreateTask', function () {
     it('should be able to create a task with a given description', async function () {
         const taskData = {
             description: 'Buy 1 orange juice'
-        }
+        };
 
         const task = await createTaskService.execute(taskData);
 
         const expectedTask = {
+            id: 1,
+            description: 'Buy 1 orange juice',
+            age: task.age,
+            status: 'pending',
+            priority: 'N',
+        }
+
+        expect(task).toStrictEqual(expectedTask);
+    });
+
+    it('should assign to a task an id based on the number of already existing tasks', async function () {
+        const taskData1 = {
+            description: 'task for testing purposes'
+        };
+        const taskData2 = {
+            description: 'Buy 1 orange juice'
+        };
+
+        await createTaskService.execute(taskData1);
+        const task = await createTaskService.execute(taskData2);
+
+        const expectedTask = {
+            id: 2,
             description: 'Buy 1 orange juice',
             age: task.age,
             status: 'pending',
@@ -36,7 +59,7 @@ describe('CreateTask', function () {
 
     it("should set a newly created task's priority to N by default if no priority is provided", async function () {
         const taskData = {
-            description: 'Buy 1 orange juice'
+            description: 'Buy 1 orange juice',
         }
 
         const task = await createTaskService.execute(taskData);
