@@ -4,6 +4,8 @@ const FakeTasksRepository = require('../src/repositories/FakeTasksRepository');
 
 const CreateTaskService = require('../src/services/createTaskService');
 
+const Task = require('../src/models/Task');
+
 let fakeTasksRepository;
 let createTask;
 
@@ -20,13 +22,13 @@ describe('CreateTask', function () {
 
         const task = await createTask.execute(taskData);
 
-        const expectedTask = {
+        const expectedTask = new Task ({
             id: 1,
             description: 'Buy 1 orange juice',
             age: task.age,
             status: 'pending',
             priority: 'N',
-        };
+        });
 
         expect(task).toStrictEqual(expectedTask);
     });
@@ -42,13 +44,13 @@ describe('CreateTask', function () {
         await createTask.execute(taskData1);
         const task = await createTask.execute(taskData2);
 
-        const expectedTask = {
+        const expectedTask = new Task({
             id: 2,
             description: 'Buy 1 orange juice',
             age: task.age,
             status: 'pending',
             priority: 'N',
-        };
+        });
 
         expect(task).toStrictEqual(expectedTask);
     });
