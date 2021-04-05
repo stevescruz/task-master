@@ -41,7 +41,7 @@ async function makeTaskCommand() {
                     description: parsedDescription,
                     priority: options.priority,
                 });
-                const properties = ['description', 'status'];
+                const properties = ['id', 'description', 'status'];
                 const selectedTask = selectObjectProperties(properties, task);
 
                 const table = createTable(properties, [selectedTask]);
@@ -66,7 +66,7 @@ async function makeTaskCommand() {
 
                 const task = await deleteTask.execute(parsedId)
 
-                const properties = ['description', 'age', 'status'];
+                const properties = ['id', 'description', 'age', 'status'];
                 const selectedTask = selectObjectProperties(properties, task);
 
                 const table = createTable(properties, [selectedTask]);
@@ -90,7 +90,7 @@ async function makeTaskCommand() {
                 const finalizeTask = new FinalizeTaskService(tasksRepository);
                 const task = await finalizeTask.execute(parsedId);
 
-                const properties = ['description', 'age', 'status'];
+                const properties = ['id', 'description', 'age', 'status'];
                 const filteredTask = selectObjectProperties(properties, task);
                 filteredTask.age = getTimeSince(task.age);
 
@@ -112,7 +112,7 @@ async function makeTaskCommand() {
                 const listTasks = new ListTasksService(tasksRepository);
                 const tasks = await listTasks.execute(showAll);
 
-                const properties = ['description', 'age', 'priority', 'status'];
+                const properties = ['id', 'description', 'age', 'priority', 'status'];
                 const mappedTasks = tasks.map(task => {
                     const selectedTask = selectObjectProperties(properties, task);
                     return selectedTask;
@@ -133,7 +133,7 @@ async function makeTaskCommand() {
             try {
                 const showNextTasks = new ShowNextTasksService(tasksRepository);
                 const nextTasks = await showNextTasks.execute();
-                const properties = ['description', 'age', 'status'];
+                const properties = ['id', 'description', 'age', 'status'];
 
                 if (nextTasks === null) {
                     console.log(MessageColorEnum.SUCCESS('All tasks have already been done! ✅'))
@@ -156,7 +156,7 @@ async function makeTaskCommand() {
                         if (priority in nextTasks) {
                             console.log(messageColors[priority](messages[priority]));
 
-                            const selectedTask = selectObjectProperties(['description', 'age', 'status'], nextTasks[priority]);
+                            const selectedTask = selectObjectProperties(['id', 'description', 'age', 'status'], nextTasks[priority]);
 
                             const table = createTable(properties, [selectedTask]);
                             console.log(table.toString());

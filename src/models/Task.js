@@ -1,5 +1,6 @@
 class Task {
-    constructor({ description, status, age, priority }) {
+    constructor({ id, description, status, age, priority }) {
+        this.id = id;
         this.description = description;
         this.status = status ? status: 'pending';
         this.age = age ? age : (new Date());

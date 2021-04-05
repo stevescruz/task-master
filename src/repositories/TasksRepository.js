@@ -14,7 +14,10 @@ class TasksRepository {
     static async build() {
         const tasksDatabase = new Database('tasks.json');
         const tasks = await tasksDatabase.readFileContent();
-        const mappedTasks = tasks.map(task => new Task(task));
+        const mappedTasks = tasks.map((task, index) => {
+        task.id = index + 1;
+            return new Task(task)
+        });
 
         return new TasksRepository(tasksDatabase, mappedTasks);
     }
@@ -24,7 +27,9 @@ class TasksRepository {
             throw Error('Cannot create a new task with providing a description.')
         }
 
-        const task = new Task({ description, priority });
+        const id = this.tasks.length + 1;
+
+        const task = new Task({ id, description, priority });
         this.tasks.push(task);
 
         await this.tasksDatabase.writeFileContent(this.tasks);
@@ -38,6 +43,12 @@ class TasksRepository {
         }
 
         const [removedTask] = this.tasks.splice(id - 1, 1);
+        this.tasks.map((task, index) => {
+            if(index >= id - 1) {
+                task.id = index + 1;
+            }
+        });
+
         await this.tasksDatabase.writeFileContent(this.tasks);
  
         return removedTask;

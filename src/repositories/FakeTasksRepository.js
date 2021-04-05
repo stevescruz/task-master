@@ -6,7 +6,8 @@ class FakeTasksRepository {
     }
 
     async createTask({ description, priority }) {
-        const task = new Task({ description, priority });
+        const id = this.tasks.length + 1;
+        const task = new Task({ id, description, priority });
         this.tasks.push(task);
 
         return { ...task };
@@ -18,7 +19,12 @@ class FakeTasksRepository {
         }
 
         const [removedTask] = this.tasks.splice(id - 1, 1);
- 
+        this.tasks.map((task, index) => {
+            if(index >= id - 1) {
+                task.id = index + 1;
+            }
+        });
+
         return removedTask;
     }
 
