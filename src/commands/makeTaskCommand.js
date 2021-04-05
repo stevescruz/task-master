@@ -5,6 +5,7 @@ const { makeTasksRepository } = require('../repositories/makeTasksRepository');
 const CreateTaskService = require('../services/CreateTaskService');
 const DeleteTaskService = require('../services/DeleteTaskService');
 const ListTasksService = require('../services/ListTasksService');
+const ShowNextTasksService = require('../services/ShowNextTasksService');
 
 const joinInput = require('../shared/utils/joinInput');
 const selectObjectProperties = require('../shared/utils/selectObjectProperties');
@@ -130,52 +131,37 @@ async function makeTaskCommand() {
         .description('list the next pending task')
         .action(async () => {
             try {
-                const tasks = await tasksRepository.listTasks();
+                const showNextTasks = new ShowNextTasksService(tasksRepository);
+                const nextTasks = await showNextTasks.execute();
                 const properties = ['description', 'age', 'status'];
 
-                const nextTasks = tasks.reduce((acc, task) => {
-                    if (!('H' in acc) && task.priority === 'H' && task.status !== 'done') {
-                        acc['H'] = task;
-                        return acc;
-                    }
+                if (nextTasks === null) {
+                    console.log(MessageColorEnum.SUCCESS('All tasks have already been done! ✅'))
+                } else {
+                    let priority;
+                    const messageColors = {
+                        'L': MessageColorEnum.LOW_PRIORITY,
+                        'N': MessageColorEnum.NORMAL_PRIORITY,
+                        'H': MessageColorEnum.HIGH_PRIORITY,
+                    };
+                    const messages = {
+                        'L': 'LOW priority task',
+                        'N': 'NORMAL priority task',
+                        'H': '⚠ HIGH priority task',
+                    };
 
-                    if (!('N' in acc) && task.priority === 'N' && task.status !== 'done') {
-                        acc['N'] = task;
-                        return acc;
-                    }
+                    const priorities = ['H', 'N', 'L'];
 
-                    if (!('L' in acc) && task.priority === 'L' && task.status !== 'done') {
-                        acc['L'] = task;
-                        return acc;
-                    }
-                    return acc;
-                }, {});
+                    priorities.forEach(priority => {
+                        if (priority in nextTasks) {
+                            console.log(messageColors[priority](messages[priority]));
 
-                if ('H' in nextTasks) {
-                    console.log(MessageColorEnum.HIGH_PRIORITY('Next HIGH priority task:'));
-                    const selectedTask = selectObjectProperties(['description', 'age', 'status'], nextTasks.H);
-                    selectedTask.age = getTimeSince(selectedTask.age);
+                            const selectedTask = selectObjectProperties(['description', 'age', 'status'], nextTasks[priority]);
 
-                    const table = createTable(properties, [selectedTask]);
-                    console.log(table.toString());
-                }
-
-                if ('N' in nextTasks) {
-                    console.log(MessageColorEnum.NORMAL_PRIORITY('Next NORMAL priority task:'));
-                    const selectedTask = selectObjectProperties(['description', 'age', 'status'], nextTasks.N);
-                    selectedTask.age = getTimeSince(selectedTask.age);
-
-                    const table = createTable(properties, [selectedTask]);
-                    console.log(table.toString());
-                }
-
-                if ('L' in nextTasks) {
-                    console.log(MessageColorEnum.LOW_PRIORITY('Next LOW priority task:'));
-                    const selectedTask = selectObjectProperties(['description', 'age', 'status'], nextTasks.L);
-                    selectedTask.age = getTimeSince(selectedTask.age);
-
-                    const table = createTable(properties, [selectedTask]);
-                    console.log(table.toString());
+                            const table = createTable(properties, [selectedTask]);
+                            console.log(table.toString());
+                        }
+                    });
                 }
             } catch (error) {
                 console.error(MessageColorEnum.ERROR(error.message));
