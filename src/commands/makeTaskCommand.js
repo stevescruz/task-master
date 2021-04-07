@@ -2,23 +2,18 @@ const { Command, Option } = require('commander');
 
 const { makeTasksRepository } = require('../repositories/makeTasksRepository');
 
-const CreateTaskService = require('../services/CreateTaskService');
-const DeleteTaskService = require('../services/DeleteTaskService');
-const FinalizeTaskService = require('../services/FinalizeTaskService');
-const ListTasksService = require('../services/ListTasksService');
-const ShowNextTasksService = require('../services/ShowNextTasksService');
+const TasksController = require('../controllers/TasksController');
+const ShowNextTasksController = require('../controllers/ShowNextTasksController');
 
-const joinInput = require('../shared/utils/joinInput');
-const selectObjectProperties = require('../shared/utils/selectObjectProperties');
-const getTimeSince = require('../shared/utils/getTimeSince');
-const createTable = require('../shared/utils/createTable');
-
-const MessageColorEnum = require('../shared/enums/MessageColorEnum');
 const AllowedChoicesTaskEnum = require('../shared/enums/AllowedChoicesTaskEnum');
 
 async function makeTaskCommand() {
     const taskCommand = new Command('task');
+
     const tasksRepository = await makeTasksRepository();
+
+    const tasksController = new TasksController(tasksRepository);
+    const showNextTasksController = new ShowNextTasksController(tasksRepository);
 
     taskCommand
         .description('create, remove or list existing tasks.', {
@@ -34,72 +29,19 @@ async function makeTaskCommand() {
             .default('N')
         )
         .action(async (description, options) => {
-            try {
-                const parsedDescription = joinInput(description, ' ');
-                const createTask = new CreateTaskService(tasksRepository);
-                const task = await createTask.execute({
-                    description: parsedDescription,
-                    priority: options.priority,
-                });
-                const properties = ['id', 'description', 'status'];
-                const selectedTask = selectObjectProperties(properties, task);
-
-                const table = createTable(properties, [selectedTask]);
-                console.log(table.toString());
-                console.log(MessageColorEnum.SUCCESS(`New task added successfully.`));
-            } catch (error) {
-                console.error(MessageColorEnum.ERROR(error.message));
-            }
+            tasksController.create(description, options.priority);
         });
 
     taskCommand
         .command('delete <id>')
         .action(async (id) => {
-            try {
-                const parsedId = parseInt(id);
-
-                if (Number.isNaN(parsedId)) {
-                    throw new Error('Cannot provide a non-numeric value for the id.');
-                }
-
-                const deleteTask = new DeleteTaskService(tasksRepository);
-
-                const task = await deleteTask.execute(parsedId)
-
-                const properties = ['id', 'description', 'age', 'status'];
-                const selectedTask = selectObjectProperties(properties, task);
-
-                const table = createTable(properties, [selectedTask]);
-                console.log(table.toString());
-                console.log(MessageColorEnum.SUCCESS('Task deleted successfully.'));
-            } catch (error) {
-                console.error(MessageColorEnum.ERROR(error.message));
-            }
+            tasksController.delete(id);
         });
 
     taskCommand
         .command('done <id>')
         .action(async (id) => {
-            try {
-                const parsedId = parseInt(id);
-
-                if (Number.isNaN(parsedId)) {
-                    throw new Error('Cannot provide a non-numeric value for the id.');
-                }
-
-                const finalizeTask = new FinalizeTaskService(tasksRepository);
-                const task = await finalizeTask.execute(parsedId);
-
-                const properties = ['id', 'description', 'age', 'status'];
-                const filteredTask = selectObjectProperties(properties, task);
-                filteredTask.age = getTimeSince(task.age);
-
-                const table = createTable(properties, [filteredTask]);
-                console.log(table.toString());
-                console.log(MessageColorEnum.SUCCESS("Task's status marked as done successfully."));
-            } catch (error) {
-                console.error(MessageColorEnum.ERROR(error.message));
-            }
+            tasksController.update(id);
         });
 
     taskCommand
@@ -107,65 +49,14 @@ async function makeTaskCommand() {
         .description('list all pending tasks')
         .option('-a, --all', 'list all existing tasks, including those that are pending', false)
         .action(async (options) => {
-            try {
-                const showAll = options.all ? true : false;
-                const listTasks = new ListTasksService(tasksRepository);
-                const tasks = await listTasks.execute(showAll);
-
-                const properties = ['id', 'description', 'age', 'priority', 'status'];
-                const mappedTasks = tasks.map(task => {
-                    const selectedTask = selectObjectProperties(properties, task);
-                    return selectedTask;
-                });
-
-                const table = createTable(properties, mappedTasks);
-                console.log(table.toString());
-                console.log(MessageColorEnum.SUCCESS(`${mappedTasks.length} ${mappedTasks.length !== 1 ? 'tasks were' : 'task was'} displayed successfully.`));
-            } catch (error) {
-                console.error(MessageColorEnum.ERROR(error.message));
-            }
+            tasksController.index(options.all);
         })
 
     taskCommand
         .command('next')
         .description('list the next pending task')
         .action(async () => {
-            try {
-                const showNextTasks = new ShowNextTasksService(tasksRepository);
-                const nextTasks = await showNextTasks.execute();
-                const properties = ['id', 'description', 'age', 'status'];
-
-                if (nextTasks === null) {
-                    console.log(MessageColorEnum.SUCCESS('All tasks have already been done! ✅'))
-                } else {
-                    let priority;
-                    const messageColors = {
-                        'L': MessageColorEnum.LOW_PRIORITY,
-                        'N': MessageColorEnum.NORMAL_PRIORITY,
-                        'H': MessageColorEnum.HIGH_PRIORITY,
-                    };
-                    const messages = {
-                        'L': 'LOW priority task',
-                        'N': 'NORMAL priority task',
-                        'H': '⚠ HIGH priority task',
-                    };
-
-                    const priorities = ['H', 'N', 'L'];
-
-                    priorities.forEach(priority => {
-                        if (priority in nextTasks) {
-                            console.log(messageColors[priority](messages[priority]));
-
-                            const selectedTask = selectObjectProperties(['id', 'description', 'age', 'status'], nextTasks[priority]);
-
-                            const table = createTable(properties, [selectedTask]);
-                            console.log(table.toString());
-                        }
-                    });
-                }
-            } catch (error) {
-                console.error(MessageColorEnum.ERROR(error.message));
-            }
+            showNextTasksController.index();
         });
 
     return taskCommand;
