@@ -15,7 +15,7 @@ class TasksRepository {
         const tasksDatabase = new Database('tasks.json');
         const tasks = await tasksDatabase.readFileContent();
         const mappedTasks = tasks.map((task, index) => {
-        task.id = index + 1;
+            task.id = index + 1;
             return new Task(task)
         });
 
@@ -44,13 +44,13 @@ class TasksRepository {
 
         const [removedTask] = this.tasks.splice(id - 1, 1);
         this.tasks.map((task, index) => {
-            if(index >= id - 1) {
+            if (index >= id - 1) {
                 task.id = index + 1;
             }
         });
 
         await this.tasksDatabase.writeFileContent(this.tasks);
- 
+
         return removedTask;
     }
 
@@ -60,13 +60,13 @@ class TasksRepository {
         }
 
         const currentTask = this.tasks[id - 1];
-        this.tasks[id - 1] = new Task ({
+        this.tasks[id - 1] = new Task({
             ...currentTask,
             ...modifiedTask,
         });
         await this.tasksDatabase.writeFileContent(this.tasks);
 
-        const updatedTask = new Task (...this.tasks[id - 1]);
+        const updatedTask = new Task({ ...this.tasks[id - 1] });
 
         return updatedTask;
     }
