@@ -40,7 +40,7 @@ describe('ListTasks', function () {
         expect(tasks).toStrictEqual(expectedTasks);
     });
 
-    it('should be able to list all existing tasks, including those whose status are done. (After passing a truthy value to the showAll flag', async function () {
+    it('should be able to list all existing tasks, including those whose status are done. (After passing a truthy value to the showAll flag)', async function () {
         const taskData1 = {
             description: 'Buy 1 orange juice',
         };
