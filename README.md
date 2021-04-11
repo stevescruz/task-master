@@ -16,6 +16,12 @@
   <a href="#memo-license">License</a>
 </p>
 
+<div style="display: flex; flex-wrap: wrap;">
+  <img style="margin: 5px" alt="API Endpoint Request" src="https://res.cloudinary.com/dmct8cfu9/image/upload/v1618085857/task-master_task-add_wzpz3g.png" width="280" />
+
+  <img style="margin: 5px" alt="API Endpoint Response" src="https://res.cloudinary.com/dmct8cfu9/image/upload/v1618085857/task-master_task_b2a9na.png" width="250" />
+</div>
+
 ## Goal
 
 The goal is to create a todo list command-line application using Node.js that prioritizes productivity and contains the most important features without overwhelming the user.
