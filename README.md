@@ -16,12 +16,12 @@
   <a href="#memo-license">License</a>
 </p>
 
-<div style="display: flex; flex-wrap: wrap;">
-  <img style="margin: 5px" alt="CLI adds a new pending task" src="https://res.cloudinary.com/dmct8cfu9/image/upload/v1618085857/task-master_task-add_wzpz3g.png" width="280" />
+<div align="center" style="display: flex; flex-wrap: wrap;">
+  <img style="margin: 5px" alt="CLI adds a new pending task" src="https://res.cloudinary.com/dmct8cfu9/image/upload/v1618085857/task-master_task-add_wzpz3g.png" height="115" />
 
-  <img style="margin: 5px" alt="CLI deletes a task through its corresponding id after accepting the confirmation prompt" src="https://res.cloudinary.com/dmct8cfu9/image/upload/v1618259211/task-master_task-delete_p7ne3c.png" width="320" />
+  <img style="margin: 5px" alt="CLI deletes a task through its corresponding id after accepting the confirmation prompt" src="https://res.cloudinary.com/dmct8cfu9/image/upload/v1618259211/task-master_task-delete_p7ne3c.png" height="115" />
 
-  <img style="margin: 5px" alt="CLI lists all pending tasks" src="https://res.cloudinary.com/dmct8cfu9/image/upload/v1618085857/task-master_task_b2a9na.png" width="350" />
+  <img style="margin: 5px" alt="CLI lists all pending tasks" src="https://res.cloudinary.com/dmct8cfu9/image/upload/v1618085857/task-master_task_b2a9na.png" width="360" />
 </div>
 
 ## Goal
