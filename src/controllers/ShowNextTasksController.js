@@ -1,9 +1,7 @@
 const ShowNextTasksService = require('../services/ShowNextTasksService');
 
 const selectObjectProperties = require('../shared/utils/selectObjectProperties');
-
 const createTable = require('../shared/utils/createTable');
-
 const MessageColorEnum = require('../shared/enums/MessageColorEnum');
 
 class ShowNextTasksController {
