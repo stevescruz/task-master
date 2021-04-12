@@ -1,10 +1,15 @@
 {
-  "name": "task-master",
+  "name": "@stevescruz/task-master",
   "version": "1.0.0",
-  "description": "",
+  "description": "A command-line todo list that allows you to write your tasks, set priorities, view existing tasks and view the next tasks due.",
   "main": "cli.js",
-  "preferGlobal": true,
-  "bin": "./src/cli.js",
+  "publishConfig": {
+    "access": "public"
+  },
+  "bin": {
+    "@stevescruz/task-master": "./bin/task-master",
+    "task-master": "./bin/task-master"
+  },
   "scripts": {
     "test": "npx mocha './tests/**/*.js'"
   },
@@ -12,9 +17,9 @@
     "type": "git",
     "url": "git+https://github.com/stevescruz/task-master.git"
   },
-  "keywords": [],
+  "keywords": ["CLI", "todolist", "task-master"],
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/stevescruz/task-master/issues"
   },
@@ -27,5 +32,9 @@
   "devDependencies": {
     "expect": "^26.6.2",
     "mocha": "^8.3.2"
-  }
+  },
+  "files": [
+    "bin/",
+    "src/"
+  ]
 }
