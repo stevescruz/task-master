@@ -1,14 +1,11 @@
 const CreateTaskService = require('../services/CreateTaskService');
 const DeleteTaskService = require('../services/DeleteTaskService');
-const FinalizeTaskService = require('../services/FinalizeTaskService');
 const ListTasksService = require('../services/ListTasksService');
 
-const joinInput = require('../shared/utils/joinInput');
 const selectObjectProperties = require('../shared/utils/selectObjectProperties');
-const getTimeSince = require('../shared/utils/getTimeSince');
+const joinInput = require('../shared/utils/joinInput');
 const createTable = require('../shared/utils/createTable');
 const askForConfirmation = require('../shared/utils/askForConfirmation');
-
 
 const MessageColorEnum = require('../shared/enums/MessageColorEnum');
 
@@ -66,30 +63,7 @@ class TasksController {
             console.error(MessageColorEnum.ERROR(error.message));
         }
     }
-
-    async update(id) {
-        try {
-            const parsedId = parseInt(id);
-
-            if (Number.isNaN(parsedId)) {
-                throw new Error('Cannot provide a non-numeric value for the id.');
-            }
-
-            const finalizeTask = new FinalizeTaskService(this.tasksRepository);
-            const task = await finalizeTask.execute(parsedId);
-
-            const properties = ['id', 'description', 'age', 'status'];
-            const filteredTask = selectObjectProperties(properties, task);
-            filteredTask.age = getTimeSince(task.age);
-
-            const table = createTable(properties, [filteredTask]);
-            console.log(table.toString());
-            console.log(MessageColorEnum.SUCCESS("Task's status marked as done successfully."));
-        } catch (error) {
-            console.error(MessageColorEnum.ERROR(error.message));
-        }
-    }
-
+    
     async index(showAllOption) {
         try {
             const showAll = showAllOption ? true : false;

@@ -1,3 +1,5 @@
+const getTimeSince = require('../shared/utils/getTimeSince');
+
 class FinalizeTaskService {
     constructor(tasksRepository) {
         this.tasksRepository = tasksRepository;
@@ -13,6 +15,8 @@ class FinalizeTaskService {
         if(!task) {
             throw new Error(`A task with the id {${id}} does not exist.`);
         }
+
+        task.age = getTimeSince(task.age);
 
         return task;
     }

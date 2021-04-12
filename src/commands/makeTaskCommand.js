@@ -3,6 +3,7 @@ const { Command, Option } = require('commander');
 const { makeTasksRepository } = require('../repositories/makeTasksRepository');
 
 const TasksController = require('../controllers/TasksController');
+const FinalizeTaskController = require('../controllers/FinalizeTaskController');
 const ShowNextTasksController = require('../controllers/ShowNextTasksController');
 
 const AllowedChoicesTaskEnum = require('../shared/enums/AllowedChoicesTaskEnum');
@@ -13,6 +14,7 @@ async function makeTaskCommand() {
     const tasksRepository = await makeTasksRepository();
 
     const tasksController = new TasksController(tasksRepository);
+    const finalizeTaskController = new FinalizeTaskController(tasksRepository);
     const showNextTasksController = new ShowNextTasksController(tasksRepository);
 
     taskCommand
@@ -41,7 +43,7 @@ async function makeTaskCommand() {
     taskCommand
         .command('done <id>')
         .action(async (id) => {
-            tasksController.update(id);
+            finalizeTaskController.update(id);
         });
 
     taskCommand
