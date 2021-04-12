@@ -14,7 +14,7 @@ async function cli() {
         .allowUnknownOption(false)
         .allowExcessArguments(false);
 
-        program.parse(process.argv);
+    program.parse(process.argv);
 }
 
 module.exports = cli;

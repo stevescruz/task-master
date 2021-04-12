@@ -17,7 +17,11 @@
     "type": "git",
     "url": "git+https://github.com/stevescruz/task-master.git"
   },
-  "keywords": ["CLI", "todolist", "task-master"],
+  "keywords": [
+    "CLI",
+    "todolist",
+    "task-master"
+  ],
   "author": "",
   "license": "MIT",
   "bugs": {
@@ -25,6 +29,7 @@
   },
   "homepage": "https://github.com/stevescruz/task-master#readme",
   "dependencies": {
+    "@inquirer/confirm": "0.0.13-alpha.0",
     "chalk": "^4.1.0",
     "cli-table3": "^0.6.0",
     "commander": "^7.2.0"

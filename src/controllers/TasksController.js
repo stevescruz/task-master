@@ -6,8 +6,9 @@ const ListTasksService = require('../services/ListTasksService');
 const joinInput = require('../shared/utils/joinInput');
 const selectObjectProperties = require('../shared/utils/selectObjectProperties');
 const getTimeSince = require('../shared/utils/getTimeSince');
-
 const createTable = require('../shared/utils/createTable');
+const askForConfirmation = require('../shared/utils/askForConfirmation');
+
 
 const MessageColorEnum = require('../shared/enums/MessageColorEnum');
 
@@ -44,16 +45,23 @@ class TasksController {
                 throw new Error('Cannot provide a non-numeric value for the id.');
             }
 
-            const deleteTask = new DeleteTaskService(this.tasksRepository);
+            const questionMessage = `Are you sure you want to delete the task with id ${parsedId}?`;
+            const answer = await askForConfirmation(questionMessage);
 
-            const task = await deleteTask.execute(parsedId)
+            if(answer) {
+                const deleteTask = new DeleteTaskService(this.tasksRepository);
 
-            const properties = ['id', 'description', 'age', 'status'];
-            const selectedTask = selectObjectProperties(properties, task);
-
-            const table = createTable(properties, [selectedTask]);
-            console.log(table.toString());
-            console.log(MessageColorEnum.SUCCESS('Task deleted successfully.'));
+                const task = await deleteTask.execute(parsedId)
+    
+                const properties = ['id', 'description', 'age', 'status'];
+                const selectedTask = selectObjectProperties(properties, task);
+    
+                const table = createTable(properties, [selectedTask]);
+                console.log(table.toString());
+                console.log(MessageColorEnum.SUCCESS('Task deleted successfully.'));
+            } else {
+                console.log(MessageColorEnum.WARNING('Operation aborted.'));
+            }
         } catch (error) {
             console.error(MessageColorEnum.ERROR(error.message));
         }
