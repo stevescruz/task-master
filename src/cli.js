@@ -4,7 +4,7 @@ const { Command } = require('commander');
 
 const { makeTaskCommand } = require('./commands/makeTaskCommand');
 
-async function main() {
+async function cli() {
     const program = new Command;
 
     program
@@ -17,4 +17,4 @@ async function main() {
         program.parse(process.argv);
 }
 
-main();
+module.exports = cli;
