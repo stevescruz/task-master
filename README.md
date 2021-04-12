@@ -17,9 +17,11 @@
 </p>
 
 <div style="display: flex; flex-wrap: wrap;">
-  <img style="margin: 5px" alt="API Endpoint Request" src="https://res.cloudinary.com/dmct8cfu9/image/upload/v1618085857/task-master_task-add_wzpz3g.png" width="280" />
+  <img style="margin: 5px" alt="CLI adds a new pending task" src="https://res.cloudinary.com/dmct8cfu9/image/upload/v1618085857/task-master_task-add_wzpz3g.png" width="280" />
 
-  <img style="margin: 5px" alt="API Endpoint Response" src="https://res.cloudinary.com/dmct8cfu9/image/upload/v1618085857/task-master_task_b2a9na.png" width="250" />
+  <img style="margin: 5px" alt="CLI deletes a task through its corresponding id after accepting the confirmation prompt" src="https://res.cloudinary.com/dmct8cfu9/image/upload/v1618259211/task-master_task-delete_p7ne3c.png" width="320" />
+
+  <img style="margin: 5px" alt="CLI lists all pending tasks" src="https://res.cloudinary.com/dmct8cfu9/image/upload/v1618085857/task-master_task_b2a9na.png" width="350" />
 </div>
 
 ## Goal
@@ -93,6 +95,7 @@ This project was developed with the following technologies:
 
 -  [Node.js](https://nodejs.org/en/)
 -  [Commander](https://github.com/tj/commander.js/)
+-  [Inquirer](https://github.com/SBoudrias/Inquirer.js)
 -  [Chalk](https://github.com/chalk/chalk)
 -  [CLI-Table-3](https://github.com/cli-table/cli-table3)
 -  [Mocha](https://mochajs.org/)
