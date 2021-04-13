@@ -18,15 +18,20 @@ async function makeTaskCommand() {
     const showNextTasksController = new ShowNextTasksController(tasksRepository);
 
     taskCommand
-        .description('create, remove or list existing tasks.', {
-            subcommand: 'add, delete, done or list'
+        .description('Can be used in conjunction with another command to create new tasks\n and to remove, update or list existing tasks.', {
+            command: 'add, delete, done, list or next'
         })
-        .arguments('<subcommand>')
-        .usage('task list');
+        .arguments('<command>')
+        .usage('<command>')
 
     taskCommand
         .command('add <description...>')
-        .addOption(new Option('-p, --priority <value>', "Set a task's priority to low, normal or high")
+        .usage('<description...> [options]')
+        .addHelpText('after', '\nExample call: task-master task add Buy 6 eggs -p H')
+        .description("Adds a new task with the provided description.\nOptionally set the task's priority with the -p\noption (alias: --priority).", {
+            description: "The task's description.",
+        })
+        .addOption(new Option('-p, --priority <value>', "Set a task's priority to low, normal or high.")
             .choices(AllowedChoicesTaskEnum.PRIORITIES)
             .default('N')
         )
@@ -36,27 +41,41 @@ async function makeTaskCommand() {
 
     taskCommand
         .command('delete <id>')
+        .usage('<id>')
+        .addHelpText('after', '\nExample call: task-master task delete 5')
+        .description("Deletes a task by providing the corresponding id.", {
+            id: "An id that belongs to the task you want to delete.",
+        })
         .action(async (id) => {
             tasksController.delete(id);
         });
 
     taskCommand
         .command('done <id>')
+        .usage('<id>')
+        .addHelpText('after', '\nExample call: task-master task done 4')
+        .description("Updates a task's status to done by providing the corresponding id.", {
+            id: 'An id that belongs to the task you want to mark as done.',
+        })
         .action(async (id) => {
             finalizeTaskController.update(id);
         });
 
     taskCommand
         .command('list', { isDefault: true })
-        .description('list all pending tasks')
-        .option('-a, --all', 'list all existing tasks, including those that are pending', false)
+        .addHelpText('after', '\nExample call: task-master task list -a')
+        .description('Lists all pending tasks. Optionally lists all tasks with the -a option. (alias: --all).', {
+            '-a': 'Lists all existing tasks, including those that are done',
+        })
+        .option('-a, --all', 'list all existing tasks, including those that are done', false)
         .action(async (options) => {
             tasksController.index(options.all);
         })
 
     taskCommand
         .command('next')
-        .description('list the next pending task')
+        .addHelpText('after', '\nExample call: task-master task next')
+        .description('Lists the next pending tasks. Only shows the oldest task of each priority.')
         .action(async () => {
             showNextTasksController.index();
         });
