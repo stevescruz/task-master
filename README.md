@@ -88,6 +88,9 @@ $ node src/cli.js
 - `task-master task next`
   - Displays the next task of each `priority` that is due.
   - Does not display tasks with `status` `done`.
+- `task-master export [target_directory]`
+  - Exports a *tasks.json* file containing the saved tasks to the `target_directory`.
+  - If the `target_directory` is ommitted, it exports the file to the current working directory.
 
 ## Technologies
 
@@ -98,6 +101,7 @@ This project was developed with the following technologies:
 -  [Inquirer](https://github.com/SBoudrias/Inquirer.js)
 -  [Chalk](https://github.com/chalk/chalk)
 -  [CLI-Table-3](https://github.com/cli-table/cli-table3)
+-  [NCP](https://github.com/AvianFlu/ncp)
 -  [Mocha](https://mochajs.org/)
 -  [Expect](https://jestjs.io/docs/expect)
 -  [VS Code][vc]
