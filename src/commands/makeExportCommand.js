@@ -9,7 +9,7 @@ async function makeExportCommand() {
         .arguments('[target_directory]')
         .usage('[target_directory]')
         .addHelpText('after', '\nExample call: task-master export .')
-        .description("Exports the saved tasks data onto the tasks.json file to the current working directory.\nOr, when provided, to the target directory.", {
+        .description("Exports the tasks.json file, containing the saved tasks, to the current working directory.\nOr, when provided, to the target directory.", {
             target_directory: "The directory where you want to export tasks.json.",
         })
         .action(async (targetDirectory) => {
