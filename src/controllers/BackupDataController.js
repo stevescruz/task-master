@@ -1,8 +1,9 @@
 const path = require('path');
 
 const ExportDataService = require('../services/ExportDataService');
-const ImportDataService= require('../services/ImportDataService');
+const ImportDataService = require('../services/ImportDataService');
 
+const askForConfirmation = require('../shared/utils/askForConfirmation');
 const MessageColorEnum = require('../shared/enums/MessageColorEnum');
 
 class BackupDataController {
@@ -23,9 +24,14 @@ class BackupDataController {
 
     async update(targetFilename, sourceFilepath) {
         try {
-            const importData = new ImportDataService();
-            await importData.execute(targetFilename, sourceFilepath);
-            console.log(MessageColorEnum.SUCCESS(`The tasks from ${path.resolve(sourceFilepath)} have been imported successfully.`));
+            const questionMessage = `Are you sure you want to overwrite existing data for the tasks?`;
+            const answer = await askForConfirmation(questionMessage);
+
+            if (answer) {
+                const importData = new ImportDataService();
+                await importData.execute(targetFilename, sourceFilepath);
+                console.log(MessageColorEnum.SUCCESS(`The tasks from ${path.resolve(sourceFilepath)} have been imported successfully.`));
+            }
         } catch (error) {
             console.error(MessageColorEnum.ERROR(error));
         }
