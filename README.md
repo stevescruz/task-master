@@ -91,6 +91,9 @@ $ node src/cli.js
 - `task-master export [target_directory]`
   - Exports a *tasks.json* file containing the saved tasks to the `target_directory`.
   - If the `target_directory` is ommitted, it exports the file to the current working directory.
+- `task-master import <filepath>`
+  - Imports a *.json* file containing the saved tasks.
+  - If successful it overwrites the data for the previously existing tasks.
 
 ## Technologies
 
