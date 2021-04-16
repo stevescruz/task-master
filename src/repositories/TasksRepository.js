@@ -11,9 +11,14 @@ class TasksRepository {
         this.tasks = tasks;
     }
 
-    static async build() {
-        const tasksDatabase = new Database('tasks.json');
+    static async build(filename) {
+        const tasksDatabase = new Database(filename);
         const tasks = await tasksDatabase.readFileContent();
+        if (!Array.isArray(tasks)) {
+            tasksDatabase.clearFile();
+            throw Error(`Cannot read ${filename}. It does not contain valid tasks.`);
+        }
+
         const mappedTasks = tasks.map((task, index) => {
             task.id = index + 1;
             return new Task(task)

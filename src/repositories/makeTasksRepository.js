@@ -1,7 +1,8 @@
 const TasksRepository = require('./TasksRepository');
 
-async function makeTasksRepository() {
-    const tasksRepository = await TasksRepository.build();
+async function makeTasksRepository(filename) {
+    const dataFilename = filename || 'tasks.json'
+    const tasksRepository = await TasksRepository.build(dataFilename);
     return tasksRepository;
 }
 
