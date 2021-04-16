@@ -4,6 +4,7 @@ const { Command } = require('commander');
 
 const { makeTaskCommand } = require('./commands/makeTaskCommand');
 const { makeExportCommand } = require('./commands/makeExportCommand');
+const { makeImportCommand } = require('./commands/makeImportCommand');
 
 async function cli() {
     const program = new Command;
@@ -13,6 +14,7 @@ async function cli() {
         .description('Task Master is a command-line todo list that increases your productivity by reducing your distractions')
         .addCommand(await makeTaskCommand())
         .addCommand(await makeExportCommand())
+        .addCommand(await makeImportCommand())
         .allowUnknownOption(false)
         .allowExcessArguments(false);
 
