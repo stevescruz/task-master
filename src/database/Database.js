@@ -15,25 +15,39 @@ class Database {
     }
 
     async readFileContent() {
-        const content = await readFile(this.filepath, { encoding: this.OPTIONS.encoding });
+        const content = await readFile(this.filepath, {
+            encoding: this.OPTIONS.encoding,
+        });
+
+        if (!content) {
+            this.clearFile();
+        }
 
         return content ? JSON.parse(content) : [];
     }
 
     async writeFileContent(content) {
-        if(!content) {
+        if (!content) {
             throw new Error('Cannot write on a file without providing content for the operation.');
         }
 
-        await writeFile(this.filepath, JSON.stringify(content), { 
+        await writeFile(this.filepath, JSON.stringify(content), {
             encoding: this.OPTIONS.encoding,
         });
     }
 
     async clearFile() {
-        await writeFile(this.filepath, JSON.stringify([]), { 
+        await writeFile(this.filepath, JSON.stringify([]), {
             encoding: this.OPTIONS.encoding,
         })
+    }
+
+    async deleteFile(filename) {
+
+    }
+
+    async renameFile() {
+
     }
 }
 
