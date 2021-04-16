@@ -21,11 +21,19 @@ class Database {
     }
 
     async writeFileContent(content) {
-        await writeFile(this.filepath, JSON.stringify(content), { encoding: this.OPTIONS.encoding });
+        if(!content) {
+            throw new Error('Cannot write on a file without providing content for the operation.');
+        }
+
+        await writeFile(this.filepath, JSON.stringify(content), { 
+            encoding: this.OPTIONS.encoding,
+        });
     }
 
     async clearFile() {
-        await writeFile(this.filepath, JSON.stringify('[]'), { encoding: this.OPTIONS.encoding })
+        await writeFile(this.filepath, JSON.stringify([]), { 
+            encoding: this.OPTIONS.encoding,
+        })
     }
 }
 
