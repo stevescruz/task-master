@@ -113,14 +113,12 @@ This project was developed with the following technologies:
 
 ## Uninstallation
 
-In case you previously used `npm link` on your terminal to enable the `task-master` global terminal command, disable it:
-- Open your terminal.
-- Enter your project's directory.
-- Execute `npm unlink`.
-- Delete the project's directory
+You can uninstall task-master CLI through your terminal with the following command:
 
-Otherwise:
-- Simply delete the project's folder.
+```bash
+# Uninstall the CLI globally
+$ npm uninstall -g @stevescruz/task-master
+```
 
 ## :memo: License
 This project is under the MIT license.
