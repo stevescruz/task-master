@@ -1,4 +1,4 @@
-const { stat, rm, rename } = require('fs/promises');
+const { stat, rm, rename } = require('fs').promises;
 const { resolve } = require('path');
 
 const copyTargetFile = require('../shared/utils/copyTargetFile');
