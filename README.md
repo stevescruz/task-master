@@ -30,41 +30,43 @@ The goal is to create a todo list command-line application using Node.js that pr
 
 ## Getting Started
 
-Prerequisites: to clone and run this application, you need [Git](https://git-scm.com) and [Node.js v10.16][nodejs] (or higher) installed on your computer.
+Prerequisites: to run this application, you need [Node.js v12.0.0][nodejs] (or higher) installed on your computer.
 
-From your command line:
+From your terminal:
 
 ```bash
-# Clone this repository
-$ git clone https://github.com/stevescruz/task-master.git
-
-# Go into the repository
-$ cd task-master
-
-# Install dependencies
-$ npm install
-
-# Enable task-master as a global terminal command
-$ npm link
+# Install the CLI globally
+$ npm install -g @stevescruz/task-master
 
 # Execute the CLI
 $ task-master
 ```
 
-Optionally instead of installing task-master as a global command you can execute the CLI directly through the cli.js file.
+### Potential issues
 
-```bash
-# Clone this repository
-$ git clone https://github.com/stevescruz/task-master.git
+On Windows you may not be able to execute the task-master CLI because of your execution policies' configurations.
 
-# Go into the repository
-$ cd task-master
+Execution policies are responsible for determining what scripts your machine is allowed to execute, thus helping avoid malicious code.
 
-# Install dependencies
-$ npm install
+I recommend trying to execute `task-master` through CMD and PowerShell to see which one works. In case both do not work, then it is necessary to change the execution policy for the PowerShell.
 
-# execute the CLI entrypoint file with node
-$ node src/cli.js
+Read more about execution policies at the [Microsoft Docs](https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_execution_policies?view=powershell-7.1).
+
+Read more about this at [Stack Overflow](https://stackoverflow.com/questions/41117421/ps1-cannot-be-loaded-because-running-scripts-is-disabled-on-this-system) (includes a solution).
+
+From your PowerShell terminal:
+
+```powershell
+# Check your scopes and their execution policies
+Get-ExecutionPolicy -List
+
+# Set the execution policy for the scope that will solve your problem
+Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy Unrestricted
+
+# Whenever you want, you can revert the changes and set your scope's execution policy back to its original settings
+Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy Undefined
+
+# NOTE: The scopes and execution policies used here are just examples.
 ```
 
 ## Commands
