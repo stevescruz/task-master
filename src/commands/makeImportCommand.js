@@ -19,4 +19,4 @@ async function makeImportCommand() {
     return importCommand;
 }
 
-module.exports = { makeImportCommand };
+module.exports = makeImportCommand;

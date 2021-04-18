@@ -6,4 +6,4 @@ async function makeTasksRepository(filename) {
     return tasksRepository;
 }
 
-module.exports = { makeTasksRepository };
+module.exports = makeTasksRepository;

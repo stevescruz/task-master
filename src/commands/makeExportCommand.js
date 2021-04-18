@@ -19,4 +19,4 @@ async function makeExportCommand() {
     return exportCommand;
 }
 
-module.exports = { makeExportCommand };
+module.exports = makeExportCommand;

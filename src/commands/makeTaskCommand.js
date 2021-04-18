@@ -1,6 +1,6 @@
 const { Command, Option } = require('commander');
 
-const { makeTasksRepository } = require('../repositories/makeTasksRepository');
+const makeTasksRepository = require('../repositories/makeTasksRepository');
 
 const TasksController = require('../controllers/TasksController');
 const FinalizeTaskController = require('../controllers/FinalizeTaskController');
@@ -83,4 +83,4 @@ async function makeTaskCommand() {
     return taskCommand;
 }
 
-module.exports = { makeTaskCommand };
+module.exports = makeTaskCommand;

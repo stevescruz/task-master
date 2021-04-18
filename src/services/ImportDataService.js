@@ -2,7 +2,7 @@ const { stat, rm, rename } = require('fs').promises;
 const { resolve } = require('path');
 
 const copyTargetFile = require('../shared/utils/copyTargetFile');
-const { makeTasksRepository } = require('../repositories/makeTasksRepository');
+const makeTasksRepository = require('../repositories/makeTasksRepository');
 
 class ImportDataService {
 
