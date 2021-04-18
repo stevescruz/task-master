@@ -19,11 +19,19 @@ class Database {
             encoding: this.OPTIONS.encoding,
         });
 
-        if (!content) {
+        let parsedContent;
+
+        try {
+            if (!content) {
+                this.clearFile();
+            }
+            parsedContent = content ? JSON.parse(content) : [];
+        } catch (error) {
             this.clearFile();
+            throw new Error(`The ${this.filepath} file contains invalid JSON. Its content has been reset.\nTry again!`);
         }
 
-        return content ? JSON.parse(content) : [];
+        return parsedContent;
     }
 
     async writeFileContent(content) {
@@ -31,23 +39,13 @@ class Database {
             throw new Error('Cannot write on a file without providing content for the operation.');
         }
 
-        await writeFile(this.filepath, JSON.stringify(content), {
+        await writeFile(this.filepath, JSON.stringify(content, null, 2), {
             encoding: this.OPTIONS.encoding,
         });
     }
 
     async clearFile() {
-        await writeFile(this.filepath, JSON.stringify([]), {
-            encoding: this.OPTIONS.encoding,
-        })
-    }
-
-    async deleteFile(filename) {
-
-    }
-
-    async renameFile() {
-
+        await this.writeFileContent([]);
     }
 }
 
