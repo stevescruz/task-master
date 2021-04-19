@@ -1,27 +1,22 @@
-const Table = require('cli-table3');
+const Table = require('tty-table');
+
+const TableColorEnum = require('../enums/TableColorEnum');
 
 function createTable(propertiesArray, dataArray) {
     const propertiesNoDuplicates = new Set(propertiesArray);
     
-    const table = new Table({
-        head: [...propertiesNoDuplicates],
+    const HeaderProperties = [...propertiesNoDuplicates].map((property) => {
+        return {
+            value: property,
+            headerColor: TableColorEnum.HEADER,
+            color: property.toLowerCase() === 'id' ? TableColorEnum.ID : TableColorEnum.ROW,
+        };
     });
 
-    const mappedDataArray = dataArray.map((object) => {
-        return [...propertiesNoDuplicates].reduce((acc, property) => {
-            if (property in object) {
-                acc.push(object[property]);
-            return acc;
-            }
-            return acc;
-        }, []);
-    });
-
-    mappedDataArray.forEach(arrayWithValues => {
-        table.push(arrayWithValues);
-    })
-
-    return table;
+    const rows = dataArray;
+    
+    const tableOutput = new Table(HeaderProperties, rows).render();
+    return tableOutput;
 }
 
 module.exports = createTable;

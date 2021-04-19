@@ -27,7 +27,7 @@ class TasksController {
             const selectedTask = selectObjectProperties(properties, task);
 
             const table = createTable(properties, [selectedTask]);
-            console.log(table.toString());
+            console.log(table);
             console.log(MessageColorEnum.SUCCESS(`New task added successfully.`));
         } catch (error) {
             console.error(MessageColorEnum.ERROR(error.message));
@@ -54,7 +54,7 @@ class TasksController {
                 const selectedTask = selectObjectProperties(properties, task);
     
                 const table = createTable(properties, [selectedTask]);
-                console.log(table.toString());
+                console.log(table);
                 console.log(MessageColorEnum.SUCCESS('Task deleted successfully.'));
             } else {
                 console.log(MessageColorEnum.WARNING('Operation aborted.'));
@@ -77,7 +77,7 @@ class TasksController {
             });
 
             const table = createTable(properties, mappedTasks);
-            console.log(table.toString());
+            console.log(table);
             console.log(MessageColorEnum.SUCCESS(`${mappedTasks.length} ${mappedTasks.length !== 1 ? 'tasks were' : 'task was'} displayed successfully.`));
         } catch (error) {
             console.error(MessageColorEnum.ERROR(error.message));

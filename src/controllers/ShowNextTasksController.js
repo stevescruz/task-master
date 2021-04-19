@@ -38,7 +38,7 @@ class ShowNextTasksController {
                         const selectedTask = selectObjectProperties(['id', 'description', 'age', 'status'], nextTasks[priority]);
 
                         const table = createTable(properties, [selectedTask]);
-                        console.log(table.toString());
+                        console.log(table);
                     }
                 });
             }

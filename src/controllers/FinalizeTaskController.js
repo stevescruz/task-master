@@ -29,7 +29,7 @@ class FinalizeTaskController {
                 const filteredTask = selectObjectProperties(properties, task);
 
                 const table = createTable(properties, [filteredTask]);
-                console.log(table.toString());
+                console.log(table);
                 console.log(MessageColorEnum.SUCCESS("Task's status marked as done successfully."));
             } else {
                 console.log(MessageColorEnum.WARNING('Operation aborted.'));

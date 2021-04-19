@@ -1,12 +1,16 @@
-const chalk = require("chalk");
+const { enableTerminalColors } = require('../../config/config.json'); 
+const chalk = require('chalk');
+
+const doNothing = arg => arg;
 
 MessageColorEnum = {
-    SUCCESS: chalk.bold.green,
-    WARNING: chalk.bold.keyword('orange'),
-    ERROR: chalk.bold.red,
-    LOW_PRIORITY: chalk.yellowBright,
-    NORMAL_PRIORITY: chalk.hex('#FFA500'),
-    HIGH_PRIORITY: chalk.redBright,
+    SUCCESS_IGNORE_CONFIG: chalk.bold.green,
+    SUCCESS: enableTerminalColors ? chalk.bold.green : doNothing,
+    WARNING: enableTerminalColors ? chalk.bold.keyword('orange') : doNothing,
+    ERROR: enableTerminalColors ? chalk.bold.red : doNothing,
+    LOW_PRIORITY: enableTerminalColors ? chalk.yellowBright : doNothing,
+    NORMAL_PRIORITY: enableTerminalColors ? chalk.hex('#FFA500') : doNothing,
+    HIGH_PRIORITY: enableTerminalColors ? chalk.redBright : doNothing,
 }
 
 module.exports = MessageColorEnum;
