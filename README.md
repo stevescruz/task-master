@@ -96,6 +96,11 @@ Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy Undefined
 - `task-master import <filepath>`
   - Imports a *.json* file containing the saved tasks.
   - If successful it overwrites the data for the previously existing tasks.
+- `task-master config [--no-colors]`
+  - Updates the configurations for the task-master CLI.
+  - If all options are ommitted, it sets all configurations to their default values.
+  - The task's `--no-colors` flag is optional. It sets the `enableTerminalColors` property to `false`, disabling colored output when using the task-master CLI.
+  - When the `--no-colors` flag is ommitted, **by default**, it sets the `enableTerminalColors` property to `true`, enabling colored output when using the task-master CLI.
 
 ## Technologies
 
@@ -105,7 +110,7 @@ This project was developed with the following technologies:
 -  [Commander](https://github.com/tj/commander.js/)
 -  [Inquirer](https://github.com/SBoudrias/Inquirer.js)
 -  [Chalk](https://github.com/chalk/chalk)
--  [CLI-Table-3](https://github.com/cli-table/cli-table3)
+-  [TTY-Table](https://github.com/tecfu/tty-table)
 -  [NCP](https://github.com/AvianFlu/ncp)
 -  [Mocha](https://mochajs.org/)
 -  [Expect](https://jestjs.io/docs/expect)
