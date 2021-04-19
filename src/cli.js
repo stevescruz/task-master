@@ -2,7 +2,7 @@
 
 const { Command } = require('commander');
 
-const { makeTaskCommand, makeExportCommand, makeImportCommand } = require('./commands');
+const { makeTaskCommand, makeExportCommand, makeImportCommand, makeConfigCommand } = require('./commands');
 
 const MessageColorEnum = require('./shared/enums/MessageColorEnum');
 
@@ -15,6 +15,7 @@ async function cli() {
             .addCommand(await makeTaskCommand())
             .addCommand(await makeExportCommand())
             .addCommand(await makeImportCommand())
+            .addCommand(await makeConfigCommand())
             .allowUnknownOption(false)
             .allowExcessArguments(false);
 
