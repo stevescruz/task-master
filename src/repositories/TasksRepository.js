@@ -76,6 +76,15 @@ class TasksRepository {
         return updatedTask;
     }
 
+    async findById(id) {
+        if (this.tasks.length < id || id <= 0) {
+            return null;
+        }
+
+        const task = this.tasks[id - 1];
+        return task;
+    }
+
     async list() {
         return this.tasks.length !== 0 ? [...this.tasks] : [];
     }
