@@ -18,8 +18,11 @@
     "url": "git+https://github.com/stevescruz/task-master.git"
   },
   "keywords": [
-    "CLI",
+    "cli",
     "todolist",
+    "productivity",
+    "organization",
+    "command-line",
     "task-master"
   ],
   "author": "",
