@@ -4,6 +4,7 @@ const makeTasksRepository = require('../repositories/makeTasksRepository');
 
 const TasksController = require('../controllers/TasksController');
 const FinalizeTaskController = require('../controllers/FinalizeTaskController');
+const TagTaskController = require('../controllers/TagTaskController');
 const ShowNextTasksController = require('../controllers/ShowNextTasksController');
 
 const AllowedChoicesTaskEnum = require('../shared/enums/AllowedChoicesTaskEnum');
@@ -15,6 +16,7 @@ async function makeTaskCommand() {
 
     const tasksController = new TasksController(tasksRepository);
     const finalizeTaskController = new FinalizeTaskController(tasksRepository);
+    const tagTaskController = new TagTaskController(tasksRepository);
     const showNextTasksController = new ShowNextTasksController(tasksRepository);
 
     taskCommand
@@ -59,6 +61,29 @@ async function makeTaskCommand() {
         })
         .action(async (id) => {
             finalizeTaskController.update(id);
+        });
+
+    taskCommand
+        .command('tag <id> <tag>')
+        .usage('<id> <tag>')
+        .addHelpText('after', '\nExample call: task-master task tag 2 home')
+        .description("Updates a task's tag by providing the corresponding id and a tag title.", {
+            id: 'An id that belongs to the task you want to tag.',
+            tag: "The tag's title.",
+        })
+        .action(async (id, tag) => {
+            tagTaskController.update(id, tag);
+        });
+
+    taskCommand
+        .command('untag <id>')
+        .usage('<id>')
+        .addHelpText('after', '\nExample call: task-master task untag 2')
+        .description("Removes a task's tag property by providing the corresponding id.", {
+            id: 'An id that belongs to the task that you want remove its tag.',
+        })
+        .action(async (id) => {
+            tagTaskController.delete(id);
         });
 
     taskCommand
