@@ -15,7 +15,7 @@ class FinalizeTaskController {
             const parsedId = parseInt(id);
 
             if (Number.isNaN(parsedId)) {
-                throw new Error('Cannot provide a non-numeric value for the id.');
+                throw new Error('Do not provide a non-numeric value for the id.');
             }
 
             const questionMessage = `Are you sure you want to mark the task with id ${parsedId} as done?`;
