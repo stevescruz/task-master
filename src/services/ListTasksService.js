@@ -5,16 +5,16 @@ class ListTasksService {
         this.tasksRepository = tasksRepository;
     }
 
-    async execute(done = false, tag = undefined) {
+    async execute(status = false, tag = undefined) {
         const tasks = await this.tasksRepository.list();
 
         let filteredTasks;
 
-        if (done || tag) {
+        if (status || tag) {
             filteredTasks = tasks.filter(task => {
                 let hasMatched = true;
 
-                if (done && task.status === 'done') {
+                if (status && task.status !== status) {
                     hasMatched = false;
                 }
                 if (tag && task.tag !== tag) {
