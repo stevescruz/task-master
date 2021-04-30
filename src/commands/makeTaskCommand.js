@@ -88,13 +88,14 @@ async function makeTaskCommand() {
 
     taskCommand
         .command('list', { isDefault: true })
-        .addHelpText('after', '\nExample call: task-master task list -a')
-        .description('Lists all pending tasks. Optionally lists all tasks with the -a option. (alias: --all).', {
-            '-a': 'Lists all existing tasks, including those that are done',
-        })
-        .option('-a, --all', 'list all existing tasks, including those that are done', false)
+        .addHelpText('after', '\nExample call: task-master task list -s done -t groceries')
+        .description('Lists all tasks. Optionally only show tasks with the given status by using the -s option. (alias: --show).')
+        .addOption(new Option('-s, --show <status>', "Only show tasks whose status is pending or done.")
+            .choices(AllowedChoicesTaskEnum.STATUS)
+        )
+        .option('-f, --filter <tag>', 'list tasks with the provided tag.')
         .action(async (options) => {
-            tasksController.index(options.all);
+            tasksController.index(options.show, options.filter);
         })
 
     taskCommand
