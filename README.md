@@ -30,7 +30,7 @@ The goal is to create a todo list command-line application using Node.js that pr
 
 ## Getting Started
 
-Prerequisites: to run this application, you need [Node.js v12.0.0][nodejs] (or higher) installed on your computer.
+Prerequisites: to run this application, you need [Node.js v14.14.0][nodejs] (or higher) installed on your computer.
 
 From your terminal:
 
@@ -115,7 +115,7 @@ Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy Undefined
 
 This project was developed with the following technologies:
 
--  [Node.js](https://nodejs.org/en/)
+-  [Node.js][nodejs]
 -  [Commander](https://github.com/tj/commander.js/)
 -  [Inquirer](https://github.com/SBoudrias/Inquirer.js)
 -  [Chalk](https://github.com/chalk/chalk)
