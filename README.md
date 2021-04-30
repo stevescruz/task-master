@@ -84,20 +84,26 @@ Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy Undefined
 - `task-master task done <id>`
   - Marks a task's `status` as `done`, hiding it from being listed by the `task list` command.
   - The task's `id` is mandatory.
+  - `task-master task tag <id> <tag>`
+  - Marks a task's tag property with the provided `<tag>`, allowing it to be filtered by the `task list -f <tag>` command.
+  - The task's `id` is mandatory.
+  - `task-master task untag <id>`
+  - Removes a task's tag property.
+  - The task's `id` is mandatory.
 - `task-master task list [-s <status>] [-f <tag>]`
   - Displays all tasks.
-  - `-s <status>` (or `--show <status>`) is an optional flag that forces the `task list` command to only display the tasks whose `status` corresponds to the provided `<status>` (available options for `<status>` are `done` or `pending`).
+  - `-s <status>` (or `--show <status>`) is an optional flag that forces the `task list` command to only display the tasks whose status property correspond to the provided `status` (available options for `<status>` are `done` or `pending`).
 - `task-master task next`
 - - Displays all tasks.
-  - `-f <tag>` (or `--filter <tag>`) is an optional flag that forces the `task list` command to only display the tasks whose `tag` property corresponds to the provided `<tag>`.
+  - `-f <tag>` (or `--filter <tag>`) is an optional flag that forces the `task list` command to only display the tasks whose tag property corresponds to the provided `tag`.
 - `task-master task next`
-  - Displays the next task of each `priority` that is due.
+  - Displays the next task of each `priority` that was not completed.
   - Does not display tasks with `status` `done`.
 - `task-master export [target_directory]`
   - Exports a *tasks.json* file containing the saved tasks to the `target_directory`.
   - If the `target_directory` is ommitted, it exports the file to the current working directory.
 - `task-master import <filepath>`
-  - Imports a *.json* file containing the saved tasks.
+  - Imports a *.json* file containing the saved tasks from the mandatorily specified `filepath`.
   - If successful it overwrites the data for the previously existing tasks.
 - `task-master config [--no-colors]`
   - Updates the configurations for the task-master CLI.
