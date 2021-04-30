@@ -10,10 +10,7 @@ function renderNextTasks(tasks) {
 
   const boardName = '@next';
 
-  const totalTasks = tasks.length;
-  const completedTasksFraction = `$0/${totalTasks}`;
-
-  console.log(`${BOARD(boardName)} ${STATISTICS(completedTasksFraction)}`);
+  console.log(`${BOARD(boardName)}`);
   if (tasks.length !== 0) {
     const mappedTasks = tasks.map(task => {
       const urgentExclamationMark = task.priority === 'H' ? `${priorityColor['H'].bold(`(!)`)}` : ``;
@@ -21,10 +18,6 @@ function renderNextTasks(tasks) {
     });
 
     mappedTasks.map(task => console.log(task));
-
-    const statisticsMessage = `${mappedTasks.length}% task${mappedTasks.length !== 1 ? 's' : ''} remaining.`;
-
-    console.log(`\n${STATISTICS(statisticsMessage)}`);
   }
 }
 
