@@ -1,16 +1,27 @@
-const { enableTerminalColors } = require('../../config/config.json'); 
 const chalk = require('chalk');
+const { supportsColor } = require('chalk');
 
-const doNothing = arg => arg;
+const { enableTerminalColors } = require('../../config/config.json'); 
 
 MessageColorEnum = {
     SUCCESS_IGNORE_CONFIG: chalk.bold.green,
-    SUCCESS: enableTerminalColors ? chalk.bold.green : doNothing,
-    WARNING: enableTerminalColors ? chalk.bold.keyword('orange') : doNothing,
-    ERROR: enableTerminalColors ? chalk.bold.red : doNothing,
-    LOW_PRIORITY: enableTerminalColors ? chalk.yellowBright : doNothing,
-    NORMAL_PRIORITY: enableTerminalColors ? chalk.hex('#FFA500') : doNothing,
-    HIGH_PRIORITY: enableTerminalColors ? chalk.redBright : doNothing,
+    SUCCESS: chalk.bold.green,
+    WARNING: chalk.bold.hex('#FFA500'),
+    ERROR: chalk.bold.red,
+    LOW_PRIORITY: chalk.yellowBright,
+    NORMAL_PRIORITY: chalk.hex('#FFA500'),
+    HIGH_PRIORITY: chalk.redBright,
+
+    BOARD: chalk.underline.hex('#d2dae2'),
+    STATISTICS: chalk.hex('#808e9b'),
+    DESCRIPTION: chalk.hex('#d2dae2'),
+    TIME_STAMP: chalk.hex('#808e9b'),
+    CHECKED: chalk.hex('#808e9b'),
+    UNTICKED: chalk.hex('#FC427B'),
+    TICK: chalk.hex('#0be881'),
+    NOTE: chalk.hex('#1B9CFC'),
 }
+
+chalk.level = enableTerminalColors ? supportsColor.level : 0;
 
 module.exports = MessageColorEnum;
