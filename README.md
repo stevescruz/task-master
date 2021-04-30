@@ -84,9 +84,12 @@ Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy Undefined
 - `task-master task done <id>`
   - Marks a task's `status` as `done`, hiding it from being listed by the `task list` command.
   - The task's `id` is mandatory.
-- `task-master task list [-a]`
-  - Displays all tasks, but hides those with `status` `done`.
-  - `-a` (or `--all`) is an optional flag that forces the `task list` command to also display the tasks whose `status` is `done`.
+- `task-master task list [-s <status>] [-f <tag>]`
+  - Displays all tasks.
+  - `-s <status>` (or `--show <status>`) is an optional flag that forces the `task list` command to only display the tasks whose `status` corresponds to the provided `<status>` (available options for `<status>` are `done` or `pending`).
+- `task-master task next`
+- - Displays all tasks.
+  - `-f <tag>` (or `--filter <tag>`) is an optional flag that forces the `task list` command to only display the tasks whose `tag` property corresponds to the provided `<tag>`.
 - `task-master task next`
   - Displays the next task of each `priority` that is due.
   - Does not display tasks with `status` `done`.
@@ -110,7 +113,6 @@ This project was developed with the following technologies:
 -  [Commander](https://github.com/tj/commander.js/)
 -  [Inquirer](https://github.com/SBoudrias/Inquirer.js)
 -  [Chalk](https://github.com/chalk/chalk)
--  [TTY-Table](https://github.com/tecfu/tty-table)
 -  [NCP](https://github.com/AvianFlu/ncp)
 -  [Mocha](https://mochajs.org/)
 -  [Expect](https://jestjs.io/docs/expect)
