@@ -31,6 +31,8 @@ class BackupDataController {
                 const importData = new ImportDataService();
                 await importData.execute(targetFilename, sourceFilepath);
                 console.log(MessageColorEnum.SUCCESS(`The tasks from ${path.resolve(sourceFilepath)} have been imported successfully.`));
+            } else {
+                console.log(MessageColorEnum.WARNING('Operation aborted.'));
             }
         } catch (error) {
             console.error(MessageColorEnum.ERROR(error));
