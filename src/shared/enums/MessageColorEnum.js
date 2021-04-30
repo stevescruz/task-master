@@ -4,10 +4,10 @@ const { supportsColor } = require('chalk');
 const { enableTerminalColors } = require('../../config/config.json'); 
 
 MessageColorEnum = {
-    SUCCESS_IGNORE_CONFIG: chalk.bold.green,
     SUCCESS: chalk.bold.green,
     WARNING: chalk.bold.hex('#FFA500'),
     ERROR: chalk.bold.red,
+    
     LOW_PRIORITY: chalk.yellowBright,
     NORMAL_PRIORITY: chalk.hex('#FFA500'),
     HIGH_PRIORITY: chalk.redBright,
