@@ -7,27 +7,34 @@ class ShowNextTasksService {
 
     async execute() {
         const tasks = await this.tasksRepository.list();
-        const nextTasks = tasks.reduce((acc, task) => {
+
+        const priorities = ['H', 'N', 'L'];
+
+        const nextTasksObject = tasks.reduce((acc, task) => {
             task.age = getTimeSince(task.age);
 
-            if (!('H' in acc) && task.priority === 'H' && task.status !== 'done') {
-                acc['H'] = task;
-                return acc;
-            }
+            priorities.some(priority => {
+                if (!(priority in acc) && task.priority === priority && task.status !== 'done') {
+                    acc[priority] = task;
+                    return true;
+                }
+            });
 
-            if (!('N' in acc) && task.priority === 'N' && task.status !== 'done') {
-                acc['N'] = task;
-                return acc;
-            }
-
-            if (!('L' in acc) && task.priority === 'L' && task.status !== 'done') {
-                acc['L'] = task;
-                return acc;
-            }
             return acc;
         }, {});
 
-        return Object.keys(nextTasks).length > 0 ? nextTasks : null;
+        const keys = Object.keys(nextTasksObject);
+        const nextTasksArray = [];
+
+        if (keys.length > 0) {
+            priorities.forEach(priority => {
+                if (nextTasksObject[priority]) {
+                    nextTasksArray.push(nextTasksObject[priority])
+                }
+            })
+        }
+
+        return nextTasksArray;
     }
 }
 
