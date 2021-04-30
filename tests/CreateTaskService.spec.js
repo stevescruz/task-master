@@ -2,7 +2,7 @@ const expect = require('expect');
 
 const FakeTasksRepository = require('../src/repositories/FakeTasksRepository');
 
-const CreateTaskService = require('../src/services/createTaskService');
+const CreateTaskService = require('../src/services/CreateTaskService');
 
 const Task = require('../src/models/Task');
 

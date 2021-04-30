@@ -14,7 +14,36 @@ describe('ListTasks', function () {
         listTasks = new ListTasksService(fakeTasksRepository);
     });
 
-    it('should be able to list exising tasks whose status are not done', async function () {
+    it('should be able to list all existing tasks', async function () {
+        const taskData1 = {
+            description: 'Buy 1 orange juice',
+        };
+
+        const taskData2 = {
+            description: 'task for testing purposes',
+        };
+
+        let task = await fakeTasksRepository.create(taskData1);
+        let finalizedTask = await fakeTasksRepository.create(taskData2);
+        finalizedTask.status = 'done';
+        finalizedTask = await fakeTasksRepository.updateById(2, finalizedTask);
+
+        const tasks = await listTasks.execute();
+
+        const [retrievedTask1, retrievedTask2] = tasks;
+
+        task.age = retrievedTask1.age;
+        task = new Task(task);
+
+        finalizedTask.age = retrievedTask2.age;
+        finalizedTask = new Task(finalizedTask);
+
+        const expectedTasks = [task, finalizedTask];
+
+        expect(tasks).toStrictEqual(expectedTasks);
+    });
+
+    it('should be able to list existing tasks whose status is not done', async function () {
         const taskData1 = {
             description: 'Buy 1 orange juice',
         };
@@ -29,41 +58,13 @@ describe('ListTasks', function () {
         finalizedTask.status = 'done';
         await fakeTasksRepository.updateById(2, finalizedTask);
 
-        const tasks = await listTasks.execute();
+        const tasks = await listTasks.execute(true);
         const [retrievedTask] = tasks;
 
         task.age = retrievedTask.age;
         task = new Task(task);
 
         const expectedTasks = [task];
-
-        expect(tasks).toStrictEqual(expectedTasks);
-    });
-
-    it('should be able to list all existing tasks, including those whose status are done. (After passing a truthy value to the showAll flag)', async function () {
-        const taskData1 = {
-            description: 'Buy 1 orange juice',
-        };
-
-        const taskData2 = {
-            description: 'task for testing purposes',
-        };
-
-        let task = await fakeTasksRepository.create(taskData1);
-        let finalizedTask = await fakeTasksRepository.create(taskData2);
-        finalizedTask.status = 'done';
-        finalizedTask = await fakeTasksRepository.updateById(2, finalizedTask);
-
-        const tasks = await listTasks.execute(true);
-        const [retrievedTask1, retrievedTask2] = tasks;
-
-        task.age = retrievedTask1.age;
-        task = new Task(task);
-
-        finalizedTask.age = retrievedTask2.age;
-        finalizedTask = new Task(finalizedTask);
-
-        const expectedTasks = [task, finalizedTask];
 
         expect(tasks).toStrictEqual(expectedTasks);
     });

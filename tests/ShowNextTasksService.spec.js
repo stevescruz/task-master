@@ -52,7 +52,7 @@ describe('ShowNextTasks', function () {
         const daysAgo = 5;
         const mockDate = new Date();
         mockDate.setDate(mockDate.getDate() - (daysAgo));
-        const expected = '5 days';
+        const expected = '5d';
 
         await fakeTasksRepository.create(taskData);
 

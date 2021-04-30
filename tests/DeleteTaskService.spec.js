@@ -99,7 +99,7 @@ describe('DeleteTask', function () {
 
         const removedTask = await deleteTask.execute(1);
 
-        const expected = '2 months'
+        const expected = '2m'
 
         await expect(removedTask.age).toBe(expected);
     });
