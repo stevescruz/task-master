@@ -5,19 +5,33 @@ class ListTasksService {
         this.tasksRepository = tasksRepository;
     }
 
-    async execute(showAll) {
+    async execute(done = false, tag = undefined) {
         const tasks = await this.tasksRepository.list();
-        const mappedTasks = tasks.map(task => {
+
+        let filteredTasks;
+
+        if (done || tag) {
+            filteredTasks = tasks.filter(task => {
+                let hasMatched = true;
+
+                if (done && task.status === 'done') {
+                    hasMatched = false;
+                }
+                if (tag && task.tag !== tag) {
+                    hasMatched = false;
+                }
+                return hasMatched;
+            });
+        } else {
+            filteredTasks = tasks;
+        }
+
+        const mappedTasks = filteredTasks.map(task => {
             task.age = getTimeSince(task.age);
             return task;
         });
 
-        if (showAll !== true) {
-            const filteredTasks = mappedTasks.filter(task => task.status !== 'done');
-            return filteredTasks;
-        } else {
-            return mappedTasks;
-        }
+        return mappedTasks;
     }
 }
 
