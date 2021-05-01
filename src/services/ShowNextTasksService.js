@@ -24,7 +24,7 @@ class ShowNextTasksService {
         }, {});
 
         const keys = Object.keys(nextTasksObject);
-        const nextTasksArray = [];
+        let nextTasksArray = [];
 
         if (keys.length > 0) {
             priorities.forEach(priority => {
@@ -32,6 +32,8 @@ class ShowNextTasksService {
                     nextTasksArray.push(nextTasksObject[priority])
                 }
             })
+        } else {
+            nextTasksArray = null;
         }
 
         return nextTasksArray;

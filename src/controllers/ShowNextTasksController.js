@@ -14,8 +14,8 @@ class ShowNextTasksController {
             const showNextTasks = new ShowNextTasksService(this.tasksRepository);
             const tasks = await showNextTasks.execute();
 
-            if (tasks.length <= 0) {
-                console.log(MessageColorEnum.SUCCESS('All tasks have already been done! ✅'))
+            if (!tasks) {
+                console.log(MessageColorEnum.SUCCESS('All tasks have already been done!'))
             } else {
                 renderNextTasks(tasks);
             }
