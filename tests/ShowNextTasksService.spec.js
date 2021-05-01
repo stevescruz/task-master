@@ -25,10 +25,7 @@ describe('ShowNextTasks', function () {
         const expectedTask1 = await fakeTasksRepository.create(taskData1);
         const expectedTask2 = await fakeTasksRepository.create(taskData2);
 
-        const nextTasks = await showNextTasks.execute();
-
-        const nextTask1 = nextTasks.H;
-        const nextTask2 = nextTasks.N;
+        const [nextTask1, nextTask2] = await showNextTasks.execute();
 
         expectedTask1.age = nextTask1.age;
         expectedTask2.age = nextTask2.age;
@@ -56,9 +53,8 @@ describe('ShowNextTasks', function () {
 
         await fakeTasksRepository.create(taskData);
 
-        const nextTasks = await showNextTasks.execute();
+        const [nextTask] = await showNextTasks.execute();
 
-        const nextTask = nextTasks.N;
         nextTask.age = getTimeSince(mockDate);
 
         expect(nextTask.age).toBe(expected);
