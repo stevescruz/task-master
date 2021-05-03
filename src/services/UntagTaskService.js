@@ -11,7 +11,6 @@ class UntagTaskService {
         }
 
         const task = await this.tasksRepository.findById(id);
-
         if (!task) {
             throw new Error(`A task with the id {${id}} does not exist.`);
         }

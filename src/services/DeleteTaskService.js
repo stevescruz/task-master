@@ -6,6 +6,10 @@ class DeleteTaskService {
     }
 
     async execute(id) {
+        if(!id) {
+            throw new Error(`Cannot delete a task without providing an id.`);
+        }
+
         const task = await this.tasksRepository.removeById(id);
 
         if(!task) {

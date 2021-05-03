@@ -10,7 +10,7 @@ class CreateTaskService {
         const allowedPriorities = new Set(AllowedChoicesTaskEnum.PRIORITIES);
 
         if (priority && !allowedPriorities.has(priority)) {
-            throw new Error('');
+            throw new Error(`Cannot accept a priority that in not among the following options: ${Array.from(allowedPriorities)}`);
         }        
         const task = await this.tasksRepository.create({
             description,
