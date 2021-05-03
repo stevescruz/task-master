@@ -1,11 +1,11 @@
 const expect = require('expect');
 
 const FakeTasksRepository = require('../src/repositories/FakeTasksRepository');
-
 const ListTasksService = require('../src/services/ListTasksService');
 
 const Task = require('../src/models/Task');
 
+let fakeTasksRepository;
 let listTasks;
 
 describe('ListTasks', function () {
@@ -15,27 +15,28 @@ describe('ListTasks', function () {
     });
 
     it('should be able to list all existing tasks', async function () {
-        const taskData1 = {
+        const pendingTaskData = {
             description: 'Buy 1 orange juice',
         };
 
-        const taskData2 = {
+        const finalizedTaskData = {
+            id: 2,
             description: 'task for testing purposes',
+            status: 'done',
         };
 
-        let task = await fakeTasksRepository.create(taskData1);
-        let finalizedTask = await fakeTasksRepository.create(taskData2);
-        finalizedTask.status = 'done';
-        finalizedTask = await fakeTasksRepository.updateById(2, finalizedTask);
+        let task = await fakeTasksRepository.create(pendingTaskData);
+        await fakeTasksRepository.create(finalizedTaskData);
+        let finalizedTask = await fakeTasksRepository.updateById(finalizedTaskData.id, { status: finalizedTaskData.status });
+
 
         const tasks = await listTasks.execute();
+        const [retrievedPendingTask, retrievedFinalizedTask] = tasks;
 
-        const [retrievedTask1, retrievedTask2] = tasks;
-
-        task.age = retrievedTask1.age;
+        task.age = retrievedPendingTask.age;
         task = new Task(task);
 
-        finalizedTask.age = retrievedTask2.age;
+        finalizedTask.age = retrievedFinalizedTask.age;
         finalizedTask = new Task(finalizedTask);
 
         const expectedTasks = [task, finalizedTask];
@@ -43,25 +44,26 @@ describe('ListTasks', function () {
         expect(tasks).toStrictEqual(expectedTasks);
     });
 
-    it('should be able to list existing tasks whose status is not done', async function () {
-        const taskData1 = {
+    it('should be able to list existing tasks whose status is pending', async function () {
+        const pendingTaskData = {
             description: 'Buy 1 orange juice',
         };
-
-        const taskData2 = {
+        const finalizedTaskData = {
+            id: 2,
             description: 'task for testing purposes',
+            status: 'done'
         };
+        const statusOption = 'pending'
 
-        let task = await fakeTasksRepository.create(taskData1);
-        
-        const finalizedTask = await fakeTasksRepository.create(taskData2);
-        finalizedTask.status = 'done';
-        await fakeTasksRepository.updateById(2, finalizedTask);
+        let task = await fakeTasksRepository.create(pendingTaskData);
 
-        const tasks = await listTasks.execute(true);
-        const [retrievedTask] = tasks;
+        await fakeTasksRepository.create(finalizedTaskData);
+        await fakeTasksRepository.updateById(finalizedTaskData.id, { status: finalizedTaskData.status });
 
-        task.age = retrievedTask.age;
+        const tasks = await listTasks.execute(statusOption);
+        const [retrievedPendingTask] = tasks;
+
+        task.age = retrievedPendingTask.age;
         task = new Task(task);
 
         const expectedTasks = [task];
@@ -71,25 +73,21 @@ describe('ListTasks', function () {
 
     it("should be able to update the listed tasks' age to time ago since they were created", async function () {
         const taskData = {
+            id: 1,
             description: 'Buy 1 orange juice',
         };
 
         const yearsAgo = 2;
         const mockDate = new Date();
-        mockDate.setFullYear(mockDate.getFullYear() - (yearsAgo + 1));
+        mockDate.setFullYear(mockDate.getFullYear() - yearsAgo);
 
-        let task = await fakeTasksRepository.create(taskData);
-        task.age = mockDate;
-        task = await fakeTasksRepository.updateById(1, task);
+        await fakeTasksRepository.create(taskData);
+        await fakeTasksRepository.updateById(taskData.id, { age: mockDate });
 
-        const tasks = await listTasks.execute();
-        const [retrievedTask] = tasks;
+        const [retrievedTask] = await listTasks.execute();
 
-        task.age = retrievedTask.age;
-        task = new Task(task);
+        const expected = '2y';
 
-        const expectedTasks = [task];
-
-        expect(tasks).toStrictEqual(expectedTasks);
+        expect(retrievedTask.age).toBe(expected);
     });
 });

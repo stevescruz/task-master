@@ -2,7 +2,6 @@ const expect = require('expect');
 
 const FakeTasksRepository = require('../src/repositories/FakeTasksRepository');
 const TagTaskService = require('../src/services/TagTaskService');
-const getTimeSince = require('../src/shared/utils/getTimeSince');
 
 let fakeTasksRepository;
 let tagTask;
@@ -13,7 +12,7 @@ describe('TagTask', function () {
     tagTask = new TagTaskService(fakeTasksRepository);
   });
 
-  it('should be able to tag a task with the provided tag', async function () {
+  it('should be able to tag a task that corresponds to a given id by providing a tag', async function () {
     const taskData = {
       id: 1,
       description: 'Buy 1 orange juice',
@@ -73,8 +72,9 @@ describe('TagTask', function () {
     };
     const newTag = 'food';
 
-    const task = await fakeTasksRepository.create(taskData);
-    task.tag = taskData.tag;
+    await fakeTasksRepository.create(taskData);
+    await fakeTasksRepository.updateById(taskData.id, { tag: taskData.tag });
+
     const updatedTask = await tagTask.execute(taskData.id, newTag);
 
     expect(updatedTask.tag).toBe(newTag);
@@ -87,16 +87,15 @@ describe('TagTask', function () {
     };
     const tag = 'groceries';
 
-    const daysAgo = 5;
+    const secondsAgo = 5;
     const mockDate = new Date();
-    mockDate.setDate(mockDate.getDate() - (daysAgo));
-    const expected = '5d';
+    mockDate.setSeconds(mockDate.getSeconds() - secondsAgo);
+    const expected = '5s';
 
     await fakeTasksRepository.create(taskData);
+    await fakeTasksRepository.updateById(taskData.id, { age: mockDate });
 
     const taggedTask = await tagTask.execute(taskData.id, tag);
-
-    taggedTask.age = getTimeSince(mockDate);
 
     expect(taggedTask.age).toBe(expected);
   });

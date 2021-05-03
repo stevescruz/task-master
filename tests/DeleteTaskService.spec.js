@@ -1,7 +1,6 @@
 const expect = require('expect');
 
 const FakeTasksRepository = require('../src/repositories/FakeTasksRepository');
-
 const DeleteTaskService = require('../src/services/DeleteTaskService');
 
 const Task = require('../src/models/Task');
@@ -15,7 +14,7 @@ describe('DeleteTask', function () {
         deleteTask = new DeleteTaskService(fakeTasksRepository);
     });
 
-    it('should be able to delete a task with a given id', async function () {
+    it('should be able to delete a task by providing its corresponding id', async function () {
         const taskData1 = {
             description: 'task for testing purposes'
         };
@@ -45,7 +44,7 @@ describe('DeleteTask', function () {
         expect(tasks).toStrictEqual(expectedTasks);
     });
 
-    it('should be able to update the id of the tasks after the removed task to reflect their new position in the array', async function () {
+    it('should be able to update the id of the remaining tasks after removing a task reflecting their new position in the tasks array', async function () {
         const taskData1 = {
             description: 'Buy 1 orange juice'
         };
@@ -71,18 +70,25 @@ describe('DeleteTask', function () {
         expect(remainingTask).toStrictEqual(expectedTask);
     });
 
-    it('should not be able to delete a task without an id', async function () {
-        await expect(deleteTask.execute()).rejects.toBeInstanceOf(Error);
-    });
-
-    it('should not be able to delete a non-existing task', async function () {
+    it('should not be able to delete a task without providing an id', async function () {
         const taskData = {
             description: 'Buy 1 orange juice'
         };
 
         await fakeTasksRepository.create(taskData);
 
-        await expect(deleteTask.execute(2)).rejects.toBeInstanceOf(Error);
+        await expect(deleteTask.execute()).rejects.toBeInstanceOf(Error);
+    });
+
+    it('should not be able to delete a non-existent task', async function () {
+        const taskData = {
+            description: 'Buy 1 orange juice'
+        };
+        const nonExistentId = 2;
+
+        await fakeTasksRepository.create(taskData);
+
+        await expect(deleteTask.execute(nonExistentId)).rejects.toBeInstanceOf(Error);
     });
 
     it("should be able to update the removed task's age to time ago since it was created", async function () {
@@ -91,13 +97,14 @@ describe('DeleteTask', function () {
         mockDate.setMonth(mockDate.getMonth() - (monthsAgo + 1));
 
         const taskData = {
+            id: 1,
             description: 'Buy 1 orange juice',
         };
 
         await fakeTasksRepository.create(taskData);
-        await fakeTasksRepository.updateById(1, { age: mockDate });
+        await fakeTasksRepository.updateById(taskData.id, { age: mockDate });
 
-        const removedTask = await deleteTask.execute(1);
+        const removedTask = await deleteTask.execute(taskData.id);
 
         const expected = '2m'
 

@@ -1,7 +1,6 @@
 const expect = require('expect');
 
 const FakeTasksRepository = require('../src/repositories/FakeTasksRepository');
-
 const CreateTaskService = require('../src/services/CreateTaskService');
 
 const Task = require('../src/models/Task');
@@ -22,7 +21,7 @@ describe('CreateTask', function () {
 
         const task = await createTask.execute(taskData);
 
-        const expectedTask = new Task ({
+        const expectedTask = new Task({
             id: 1,
             description: 'Buy 1 orange juice',
             age: task.age,
@@ -33,7 +32,7 @@ describe('CreateTask', function () {
         expect(task).toStrictEqual(expectedTask);
     });
 
-    it('should assign to a task an id based on the number of already existing tasks', async function () {
+    it('should be able to assign an id to a task based on the number of already existing tasks', async function () {
         const taskData1 = {
             description: 'task for testing purposes'
         };
@@ -89,7 +88,7 @@ describe('CreateTask', function () {
         expect(task).toHaveProperty('priority');
         expect(task.priority).toBe(expectedTask.priority);
     });
-    
+
     it("should not be able to create a task and set a priority that isn't L, N or H", async function () {
         const taskData = {
             description: 'Buy 6 eggs',
