@@ -20,7 +20,7 @@ class FakeTasksRepository {
 
         const [removedTask] = this.tasks.splice(id - 1, 1);
         this.tasks.map((task, index) => {
-            if(index >= id - 1) {
+            if (index >= id - 1) {
                 task.id = index + 1;
             }
         });
@@ -34,14 +34,23 @@ class FakeTasksRepository {
         }
 
         const currentTask = this.tasks[id - 1];
-        this.tasks[id - 1] = new Task ({
+        this.tasks[id - 1] = new Task({
             ...currentTask,
             ...modifiedTask,
         });
 
-        const updatedTask = this.tasks[id - 1];
+        const updatedTask = new Task({ ...this.tasks[id - 1] });
 
         return updatedTask;
+    }
+
+    async findById(id) {
+        if (this.tasks.length < id || id <= 0) {
+            return null;
+        }
+
+        const task = this.tasks[id - 1];
+        return task;
     }
 
     async list() {

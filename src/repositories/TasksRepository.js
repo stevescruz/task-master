@@ -28,12 +28,12 @@ class TasksRepository {
     }
 
     async create({ description, priority }) {
+        //Create tag option
         if (!description) {
-            throw Error('Cannot create a new task with providing a description.')
+            throw Error('Cannot create a new task without providing a description.')
         }
 
         const id = this.tasks.length + 1;
-
         const task = new Task({ id, description, priority });
         this.tasks.push(task);
 
