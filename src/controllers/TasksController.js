@@ -13,14 +13,15 @@ class TasksController {
         this.tasksRepository = tasksRepository;
     };
 
-    async create(description, priorityOption) {
+    async create(description, priorityOption, tag) {
         try {
             const parsedDescription = joinInput(description, ' ');
-
+            
             const createTask = new CreateTaskService(this.tasksRepository);
             await createTask.execute({
                 description: parsedDescription,
                 priority: priorityOption,
+                tag,
             });
 
             console.log(MessageColorEnum.SUCCESS(`New task added successfully.`));

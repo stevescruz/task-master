@@ -5,7 +5,7 @@ class CreateTaskService {
         this.tasksRepository = tasksRepository;
     }
 
-    async execute({ description, priority }) {
+    async execute({ description, priority, tag }) {
 
         const allowedPriorities = new Set(AllowedChoicesTaskEnum.PRIORITIES);
 
@@ -15,6 +15,7 @@ class CreateTaskService {
         const task = await this.tasksRepository.create({
             description,
             priority,
+            tag,
         });
 
         return task;

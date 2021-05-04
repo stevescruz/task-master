@@ -27,14 +27,15 @@ class TasksRepository {
         return new TasksRepository(tasksDatabase, mappedTasks);
     }
 
-    async create({ description, priority }) {
-        //Create tag option
+    async create({ description, priority, tag }) {
         if (!description) {
             throw Error('Cannot create a new task without providing a description.')
         }
 
         const id = this.tasks.length + 1;
-        const task = new Task({ id, description, priority });
+        const taskData = { id, description, priority, tag };
+        const task = new Task({...taskData});
+
         this.tasks.push(task);
 
         await this.tasksDatabase.writeFileContent(this.tasks);
