@@ -30,15 +30,16 @@ async function makeTaskCommand() {
         .command('add <description...>')
         .usage('<description...> [options]')
         .addHelpText('after', '\nExample call: task-master task add Buy 6 eggs -p H')
-        .description("Adds a new task with the provided description.\nOptionally set the task's priority with the -p\noption (alias: --priority).", {
+        .description("Adds a new task with the provided description.\nOptionally set the task's priority with the -p option (alias: --priority).\nOptionally categorize the task with the -t option (alias: --tag).", {
             description: "The task's description.",
         })
         .addOption(new Option('-p, --priority <value>', "Set a task's priority to low, normal or high.")
             .choices(AllowedChoicesTaskEnum.PRIORITIES)
             .default('N')
         )
+        .option('-t, --tag <tag>', 'categorize the task with the provided tag.')
         .action(async (description, options) => {
-            tasksController.create(description, options.priority);
+            tasksController.create(description, options.priority, options.tag);
         });
 
     taskCommand
