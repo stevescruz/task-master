@@ -17,7 +17,10 @@ class ListTasksService {
                 if (status && task.status !== status) {
                     hasMatched = false;
                 }
-                if (tag && task.tag !== tag) {
+                if(tag && !('tag' in task)) {
+                    hasMatched = false;
+                }
+                if (tag && 'tag' in task && task.tag.toLowerCase() !== tag.toLowerCase()) {
                     hasMatched = false;
                 }
                 return hasMatched;
