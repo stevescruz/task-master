@@ -5,9 +5,10 @@ class FakeTasksRepository {
         this.tasks = [];
     }
 
-    async create({ description, priority }) {
+    async create({ description, priority, tag }) {
         const id = this.tasks.length + 1;
-        const task = new Task({ id, description, priority });
+        const taskData = { id, description, priority, tag };
+        const task = new Task({ ...taskData });
         this.tasks.push(task);
 
         return new Task({ ...task });

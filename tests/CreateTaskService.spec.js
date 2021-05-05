@@ -73,6 +73,31 @@ describe('CreateTask', function () {
         expect(task.priority).toBe(expectedTask.priority);
     });
 
+    it('should be able to tag a task by providing a tag', async function () {
+        const taskData = {
+            description: 'Buy 1 orange juice',
+            tag: 'groceries',
+        }
+
+        const task = await createTask.execute(taskData);
+
+        const expected = 'groceries';
+
+        expect(task).toHaveProperty('tag');
+        expect(task.tag).toBe(expected);
+    });
+
+    it('should not be able to tag a task by providing an undefined value for tag', async function () {
+        const taskData = {
+            description: 'Buy 1 orange juice',
+            tag: undefined,
+        }
+
+        const task = await createTask.execute(taskData);
+
+        expect(task).not.toHaveProperty('tag');
+    });
+
     it('should be able to create a task and set its priority', async function () {
         const taskData = {
             description: 'Buy 1 orange juice',
