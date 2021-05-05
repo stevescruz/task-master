@@ -17,11 +17,7 @@
 </p>
 
 <div align="center" style="display: flex; flex-wrap: wrap;">
-  <img style="margin: 5px" alt="CLI adds a new pending task" src="https://res.cloudinary.com/dmct8cfu9/image/upload/v1618085857/task-master_task-add_wzpz3g.png" height="115" />
-
-  <img style="margin: 5px" alt="CLI deletes a task through its corresponding id after accepting the confirmation prompt" src="https://res.cloudinary.com/dmct8cfu9/image/upload/v1618259211/task-master_task-delete_p7ne3c.png" height="115" />
-
-  <img style="margin: 5px" alt="CLI lists all pending tasks" src="https://res.cloudinary.com/dmct8cfu9/image/upload/v1618085857/task-master_task_b2a9na.png" width="360" />
+  <img style="margin: 5px" alt="CLI adds a new pending task" src="https://res.cloudinary.com/dmct8cfu9/image/upload/v1620183656/carbon_task-master_2.png" height="450"/>
 </div>
 
 ## Goal
