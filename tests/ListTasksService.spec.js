@@ -44,6 +44,33 @@ describe('ListTasks', function () {
         expect(tasks).toStrictEqual(expectedTasks);
     });
 
+    it('should be able to list existing tasks whose status is done', async function () {
+        const pendingTaskData = {
+            description: 'Buy 1 orange juice',
+        };
+        const finalizedTaskData = {
+            id: 2,
+            description: 'task for testing purposes',
+            status: 'done'
+        };
+        const statusOption = 'done'
+
+        await fakeTasksRepository.create(pendingTaskData);
+
+        await fakeTasksRepository.create(finalizedTaskData);
+        let finalizedTask = await fakeTasksRepository.updateById(finalizedTaskData.id, { status: finalizedTaskData.status });
+
+        const tasks = await listTasks.execute(statusOption);
+        const [retrievedFinalizedTask] = tasks;
+
+        finalizedTask.age = retrievedFinalizedTask.age;
+        finalizedTask = new Task(finalizedTask);
+
+        const expectedTasks = [finalizedTask];
+
+        expect(tasks).toStrictEqual(expectedTasks);
+    });
+
     it('should be able to list existing tasks whose status is pending', async function () {
         const pendingTaskData = {
             description: 'Buy 1 orange juice',
@@ -67,6 +94,85 @@ describe('ListTasks', function () {
         task = new Task(task);
 
         const expectedTasks = [task];
+
+        expect(tasks).toStrictEqual(expectedTasks);
+    });
+
+    it('should be able to list existing tasks whose tag property matches the provided tag', async function () {
+        const tag = 'groceries';
+        const untaggedTaskData = {
+            description: 'buy a Nintendo 64',
+        };
+        const taggedTaskData = {
+            id: 2,
+            description: 'buy 1 orange juice',
+            tag,
+        };
+
+        await fakeTasksRepository.create(untaggedTaskData);
+
+        await fakeTasksRepository.create(taggedTaskData);
+        let taggedTask = await fakeTasksRepository.updateById(taggedTaskData.id, { tag: taggedTaskData.tag });
+
+        const tasks = await listTasks.execute(undefined, tag);
+        const [retrievedTaggedTask] = tasks;
+
+        taggedTask.age = retrievedTaggedTask.age;
+        taggedTask = new Task(taggedTask);
+
+        const expectedTasks = [taggedTask];
+
+        expect(tasks).toStrictEqual(expectedTasks);
+    });
+
+    it('should be able to filter tasks by their tag property with the provided tag without it being case sensitive', async function () {
+        const tag = 'GROCERIES';
+        const untaggedTaskData = {
+            description: 'buy a Nintendo 64',
+        };
+        const taggedTaskData = {
+            id: 2,
+            description: 'buy 1 orange juice',
+            tag: 'groceries',
+        };
+
+        await fakeTasksRepository.create(untaggedTaskData);
+
+        await fakeTasksRepository.create(taggedTaskData);
+        let taggedTask = await fakeTasksRepository.updateById(taggedTaskData.id, { tag: taggedTaskData.tag });
+
+        const tasks = await listTasks.execute(undefined, tag);
+        const [retrievedTaggedTask] = tasks;
+
+        taggedTask.age = retrievedTaggedTask.age;
+        taggedTask = new Task(taggedTask);
+
+        const expectedTasks = [taggedTask];
+
+        expect(tasks).toStrictEqual(expectedTasks);
+    });
+
+    it('should not be able to list any tasks when none of their tag property match the provided tag', async function () {
+        const tag = 'entertainment';
+        const untaggedTaskData = {
+            description: 'buy a Nintendo 64',
+        };
+
+        await fakeTasksRepository.create(untaggedTaskData);
+
+        const tasks = await listTasks.execute(undefined, tag);
+
+        const expectedTasks = [];
+
+        expect(tasks).toStrictEqual(expectedTasks);
+    });
+
+    it('should not be able to list any tasks when there are no registered tasks', async function () {
+        const tag = 'entertainment';
+
+        const tasks = await listTasks.execute(undefined, tag);
+
+        const expectedTasks = [];
 
         expect(tasks).toStrictEqual(expectedTasks);
     });
