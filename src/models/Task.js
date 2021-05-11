@@ -1,5 +1,5 @@
 class Task {
-    constructor({ id, description, status, age, priority, tag }) {
+    constructor({ id, description, status, timestamp, age, priority, tag }) {
         if (!id) {
             throw new Error('To register a task you must provide a valid id.')
         }
@@ -10,11 +10,14 @@ class Task {
         this.id = id;
         this.description = description;
         this.status = status || 'pending';
-        this.age = age || new Date();
+        this.timestamp = timestamp || new Date();
         this.priority = priority || 'N';
 
         if (tag) {
             this.tag = tag;
+        }
+        if (age) {
+            this.age = age;
         }
     }
 }

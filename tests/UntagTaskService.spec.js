@@ -23,14 +23,13 @@ describe('UntagTask', function () {
 
     await fakeTasksRepository.create(taskData);
     await fakeTasksRepository.updateById(taskData.id, { tag });
-    const untaggedTag = await untagTask.execute(taskData.id);
+    const untaggedTask = await untagTask.execute(taskData.id);
 
-    expect(untaggedTag.id).toBe(taskData.id);
-    expect(untaggedTag.description).toBe(taskData.description);
-    expect(untaggedTag.id).toBe(taskData.id);
-    expect(untaggedTag.status).toBe(taskData.status);
-    expect(untaggedTag.priority).toBe(taskData.priority);
-    expect(untaggedTag).not.toHaveProperty('tag');
+    expect(untaggedTask.id).toBe(taskData.id);
+    expect(untaggedTask.description).toBe(taskData.description);
+    expect(untaggedTask.status).toBe(taskData.status);
+    expect(untaggedTask.priority).toBe(taskData.priority);
+    expect(untaggedTask).not.toHaveProperty('tag');
   });
 
   it('should not be able to untag a task without providing its corresponding id', async function () {
@@ -78,7 +77,7 @@ describe('UntagTask', function () {
     const expected = '5min';
 
     await fakeTasksRepository.create(taskData);
-    await fakeTasksRepository.updateById(taskData.id, { age: mockDate, tag });
+    await fakeTasksRepository.updateById(taskData.id, { timestamp: mockDate, tag });
 
     const untaggedTask = await untagTask.execute(taskData.id);
 

@@ -11,7 +11,7 @@ class ShowNextTasksService {
         const priorities = ['H', 'N', 'L'];
 
         const nextTasksObject = tasks.reduce((acc, task) => {
-            task.age = getTimeSince(task.age);
+            task.age = getTimeSince(task.timestamp);
 
             priorities.some(priority => {
                 if (!(priority in acc) && task.priority === priority && task.status !== 'done') {

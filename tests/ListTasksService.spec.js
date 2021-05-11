@@ -188,7 +188,7 @@ describe('ListTasks', function () {
         mockDate.setFullYear(mockDate.getFullYear() - yearsAgo);
 
         await fakeTasksRepository.create(taskData);
-        await fakeTasksRepository.updateById(taskData.id, { age: mockDate });
+        await fakeTasksRepository.updateById(taskData.id, { timestamp: mockDate });
 
         const [retrievedTask] = await listTasks.execute();
 

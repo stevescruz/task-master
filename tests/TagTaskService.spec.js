@@ -28,7 +28,6 @@ describe('TagTask', function () {
 
     expect(taggedTask.id).toBe(taskData.id);
     expect(taggedTask.description).toBe(taskData.description);
-    expect(taggedTask.id).toBe(taskData.id);
     expect(taggedTask.status).toBe(taskData.status);
     expect(taggedTask.priority).toBe(taskData.priority);
     expect(taggedTask.tag).toBe(tag);
@@ -93,7 +92,7 @@ describe('TagTask', function () {
     const expected = '5s';
 
     await fakeTasksRepository.create(taskData);
-    await fakeTasksRepository.updateById(taskData.id, { age: mockDate });
+    await fakeTasksRepository.updateById(taskData.id, { timestamp: mockDate });
 
     const taggedTask = await tagTask.execute(taskData.id, tag);
 

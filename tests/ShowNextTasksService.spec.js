@@ -52,7 +52,7 @@ describe('ShowNextTasks', function () {
         const expected = '5d';
 
         await fakeTasksRepository.create(taskData);
-        await fakeTasksRepository.updateById(taskData.id, { age: mockDate });
+        await fakeTasksRepository.updateById(taskData.id, { timestamp: mockDate });
 
         const [nextTask] = await showNextTasks.execute();
 

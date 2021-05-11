@@ -24,7 +24,7 @@ describe('CreateTask', function () {
         const expectedTask = new Task({
             id: 1,
             description: 'Buy 1 orange juice',
-            age: task.age,
+            timestamp: task.timestamp,
             status: 'pending',
             priority: 'N',
         });
@@ -46,7 +46,7 @@ describe('CreateTask', function () {
         const expectedTask = new Task({
             id: 2,
             description: 'Buy 1 orange juice',
-            age: task.age,
+            timestamp: task.timestamp,
             status: 'pending',
             priority: 'N',
         });

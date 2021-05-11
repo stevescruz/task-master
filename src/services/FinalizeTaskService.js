@@ -16,7 +16,7 @@ class FinalizeTaskService {
             throw new Error(`A task with the id {${id}} does not exist.`);
         }
 
-        task.age = getTimeSince(task.age);
+        task.age = getTimeSince(task.timestamp);
 
         return task;
     }

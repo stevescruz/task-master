@@ -23,7 +23,7 @@ class UntagTaskService {
         
         const updatedTask = await this.tasksRepository.updateById(id, task);
 
-        updatedTask.age = getTimeSince(updatedTask.age);
+        updatedTask.age = getTimeSince(updatedTask.timestamp);
 
         return updatedTask;
     }

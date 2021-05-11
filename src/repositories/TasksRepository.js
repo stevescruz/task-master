@@ -40,7 +40,7 @@ class TasksRepository {
 
         await this.tasksDatabase.writeFileContent(this.tasks);
 
-        return new Task({ ...task, age: (task.age).toJSON() });
+        return new Task({ ...task, timestamp: (task.timestamp).toJSON() });
     }
 
     async removeById(id) {

@@ -30,7 +30,7 @@ class ListTasksService {
         }
 
         const mappedTasks = filteredTasks.map(task => {
-            task.age = getTimeSince(task.age);
+            task.age = getTimeSince(task.timestamp);
             return task;
         });
 

@@ -31,9 +31,10 @@ describe('DeleteTask', function () {
         const expectedTask = new Task({
             id,
             description: 'Buy 1 orange juice',
-            age: removedTask.age,
+            timestamp: removedTask.timestamp,
             status: 'pending',
             priority: 'N',
+            age: removedTask.age,
         });
 
         expect(removedTask).toStrictEqual(expectedTask);
@@ -62,7 +63,7 @@ describe('DeleteTask', function () {
         const expectedTask = new Task({
             id,
             description: 'task for testing purposes',
-            age: remainingTask.age,
+            timestamp: remainingTask.timestamp,
             status: 'pending',
             priority: 'N',
         });
@@ -102,11 +103,11 @@ describe('DeleteTask', function () {
         };
 
         await fakeTasksRepository.create(taskData);
-        await fakeTasksRepository.updateById(taskData.id, { age: mockDate });
+        await fakeTasksRepository.updateById(taskData.id, { timestamp: mockDate });
 
         const removedTask = await deleteTask.execute(taskData.id);
 
-        const expected = '2m'
+        const expected = '2m';
 
         await expect(removedTask.age).toBe(expected);
     });
