@@ -1,8 +1,8 @@
-function getTimeSince(date) {
-    const utcDate = (new Date(date)).valueOf();
-    const utcCurrentDate = (new Date()).valueOf();
+function getTimeSince(timestamp) {
+    const timestampUTC = (new Date(timestamp)).valueOf();
+    const nowTimestampUTC = (new Date()).valueOf();
 
-    let seconds = Math.floor((utcCurrentDate - utcDate) / 1000);
+    let seconds = Math.floor((nowTimestampUTC - timestampUTC) / 1000);
     let interval = seconds / 31536000;
 
     if (interval > 1) {
