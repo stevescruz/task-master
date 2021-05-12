@@ -8,13 +8,18 @@ function renderNextTasks(tasks) {
     L: LOW_PRIORITY,
   }
 
-  const boardName = '@next';
+  const priorityText = {
+    H: HIGH_PRIORITY.bold(' HIGH'),
+    N: NORMAL_PRIORITY.bold(' NORMAL'),
+    L: LOW_PRIORITY.bold(' LOW'),
+  }
+
+  const boardName = 'next tasks';
 
   console.log(`${BOARD(boardName)}`);
   if (tasks.length !== 0) {
     const mappedTasks = tasks.map(task => {
-      const urgentExclamationMark = task.priority === 'H' ? `${priorityColor['H'].bold(`(!)`)}` : ``;
-      return `  ${STATISTICS(`${task.id}.`)} ${UNTICKED('☐')} ${priorityColor[task.priority](task.description)} ${TIME_STAMP(task.age)} ${urgentExclamationMark}`;
+      return `  ${STATISTICS(`${task.id}.`)} ${UNTICKED('☐')} ${priorityColor[task.priority](task.description)} ${TIME_STAMP(task.age)}${priorityText[task.priority]}`;
     });
 
     mappedTasks.map(task => console.log(task));
