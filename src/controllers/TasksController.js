@@ -55,12 +55,16 @@ class TasksController {
         }
     }
     
-    async index(status, tag) {
+    async index(status, tag, showDate) {
         try {
             const listTasks = new ListTasksService(this.tasksRepository);
             const tasks = await listTasks.execute(status, tag);
 
-            renderTasks(tasks, tag);
+            if (tasks.length <= 0) {
+                console.log(MessageColorEnum.WARNING('No tasks have been registered.'))
+            } else {
+                renderTasks(tasks, tag, showDate);
+            }
         } catch (error) {
             console.error(MessageColorEnum.ERROR(error.message));
         }

@@ -95,8 +95,9 @@ async function makeTaskCommand() {
             .choices(AllowedChoicesTaskEnum.STATUS)
         )
         .option('-f, --filter <tag>', 'list tasks with the provided tag.')
+        .option('-d, --dates', 'list tasks grouped by their creation dates.', false)
         .action(async (options) => {
-            tasksController.index(options.show, options.filter);
+            tasksController.index(options.show, options.filter, options.dates);
         })
 
     taskCommand
