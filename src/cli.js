@@ -10,7 +10,7 @@ async function cli() {
     try {
         const program = new Command;
         program
-            .version('1.3.0', '-v, --version', "output Task Master's current version")
+            .version('1.4.0', '-v, --version', "output Task Master's current version")
             .description('Task Master is a minimalistic command-line todo list that increases your productivity')
             .addCommand(await makeTaskCommand())
             .addCommand(await makeExportCommand())

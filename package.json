@@ -1,6 +1,6 @@
 {
   "name": "@stevescruz/task-master",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "description": "A command-line todo list that allows you to write your tasks, set priorities, view existing tasks and view the next tasks due.",
   "main": "src/index.js",
   "publishConfig": {

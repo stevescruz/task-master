@@ -72,7 +72,7 @@ Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy Undefined
 - `task-master task add <description [-p <priority>]`
   - Creates a new task.
   - The task's `description` is mandatory.
-  - The task's `-p` (or `--priority`) flag is optional. It sets a task's `priority` and can only receive `L`, `N` or `H` as a parameter.
+  - The task's `-p` (alias: `--priority`) flag is optional. It sets a task's `priority` and can only receive `L`, `N` or `H` as a parameter.
   - When the `-p` option is ommitted, **by default**, the new task's `priority` is set to `N`.
 - `task-master task delete <id>`
   - Deletes a task.
@@ -88,13 +88,18 @@ Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy Undefined
   - The task's `id` is mandatory.
 - `task-master task list [-s <status>] [-f <tag>]`
   - Displays all tasks.
-  - `-s <status>` (or `--show <status>`) is an optional flag that forces the `task list` command to only display the tasks whose status property correspond to the provided `status` (available options for `<status>` are `done` or `pending`).
+  - `-s <status>` (alias: `--show <status>`) is an optional flag that forces the `task list` command to only display the tasks whose status property correspond to the provided `status` (available options for `<status>` are `done` or `pending`).
+  - `-d` (alias: `--dates`) is an optional flag that forces the `task list` command to display tasks grouped by their creation date.
 - `task-master task next`
-- - Displays all tasks.
-  - `-f <tag>` (or `--filter <tag>`) is an optional flag that forces the `task list` command to only display the tasks whose tag property corresponds to the provided `tag`.
+  - Displays all tasks.
+  - `-f <tag>` (alias: `--filter <tag>`) is an optional flag that forces the `task list` command to only display the tasks whose tag property corresponds to the provided `tag`.
 - `task-master task next`
   - Displays the next task of each `priority` that was not completed.
   - Does not display tasks with `status` `done`.
+  <div align="center" style="display: flex; flex-wrap: wrap;">
+    <img style="margin: 5px" alt="CLI adds a new pending task" src="https://res.cloudinary.com/dmct8cfu9/image/upload/v1620943687/carbon_task-master_3.png" height="250"/>
+  </div>
+
 - `task-master export [target_directory]`
   - Exports a *tasks.json* file containing the saved tasks to the `target_directory`.
   - If the `target_directory` is ommitted, it exports the file to the current working directory.

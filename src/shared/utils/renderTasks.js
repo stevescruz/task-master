@@ -36,7 +36,6 @@ function renderTasks(tasks, title, showDate) {
         year: 'numeric',
       };
 
-
       const date = new Date(task.timestamp)
         .toLocaleDateString(undefined, localeOptions);
 
